@@ -64,12 +64,12 @@ jobs:
       run: pwd
       
     - name: Build the Docker image
-      run: docker build . -t customer-service
+      run: docker build . -t customer-service:${{ github.sha }}
 
     - name: Generate signed SBOM for docker image
       uses: scribe-security/action-bom@master
       with:
-        target: 'docker:customer-service'
+        target: 'docker:customer-service:${{ github.sha }}
         scribe-enable: true
         product-key: "sas-customer-service"
         scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
