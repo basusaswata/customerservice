@@ -5,6 +5,16 @@ name: Maven Package
 
 on:
    workflow_dispatch:
+env:
+  IMAGE_NAME: ${{ github.repository }}:${{ github.sha }}
+  AUTHOR_NAME: Sas
+  AUTHOR_EMAIL: basu.saswata@gmail.com
+  AUTHOR_PHONE: 111-1111-11
+  SUPPLIER_NAME: Sas-homelab
+  SUPPLIER_URL: www.sas-homelab.com
+  SUPPLIER_EMAIL: basu.saswata@gmail.com
+  SUPPLIER_PHONE: 001-001-0011
+  USER_DATA: service-binding
 jobs:
   build:
 
@@ -12,9 +22,11 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
@@ -22,7 +34,46 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-
+   
+    - name: Generate signed SBOM for repo content
+      uses: scribe-security/action-bom@master
+      with:
+        target: 'git:.'
+        scribe-enable: true
+        components: packages,files,dep
+        product-key: "sas-customer-service"
+        
+        scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
+        format: attest
+        product-version: "version_prod_sprint37_01"
+        author-name: $AUTHOR_NAME
+        author-email: $AUTHOR_EMAIL
+        author-phone: $AUTHOR_PHONE
+        supplier-name: $SUPPLIER_NAME
+        supplier-url: $SUPPLIER_URL
+        supplier-email: $SUPPLIER_EMAIL 
+        supplier-phone: $SUPPLIER_PHONE
+        
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      
+    - name: Build the Docker image
+      run: docker build . -t customer-service:${{ github.sha }}
 
+    - name: Generate signed SBOM for docker image
+      uses: scribe-security/action-bom@master
+      with:
+        target: 'docker:customer-service:${{ github.sha }}'
+        scribe-enable: true
+        product-key: "sas-customer-service"
+        scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
+        format: attest
+        product-version: "version_prod_sprint37_01"
+        force: true
+        author-name: $AUTHOR_NAME
+        author-email: $AUTHOR_EMAIL
+        author-phone: $AUTHOR_PHONE
+        supplier-name: $SUPPLIER_NAME
+        supplier-url: $SUPPLIER_URL
+        supplier-email: $SUPPLIER_EMAIL 
+        supplier-phone: $SUPPLIER_PHONE
