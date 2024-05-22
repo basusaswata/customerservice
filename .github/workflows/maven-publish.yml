@@ -56,9 +56,13 @@ jobs:
         
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      
     - name: list few things
       run: ls
-
+      
+    - name: current directory
+      run: pwd
+      
     - name: Build the Docker image
       run: docker build . -t customer-service
 
