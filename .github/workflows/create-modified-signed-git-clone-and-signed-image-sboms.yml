@@ -1,0 +1,77 @@
+name: Create modified signed git clone and signed image sboms
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: ${{ github.repository }}:${{ github.sha }}
+  LOGICAL_APP_NAME: scribe-demo-product
+  AUTHOR_NAME: McCoy Pauley
+  AUTHOR_EMAIL: info@scribesecurity.com
+  AUTHOR_PHONE: 111-1111-11
+  SUPPLIER_NAME: Scribe-Security
+  SUPPLIER_URL: www.scribesecurity.com
+  SUPPLIER_EMAIL: info@scribesecurity.com
+  SUPPLIER_PHONE: 001-001-0011
+  USER_DATA: service-binding
+
+  
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Modify repo file
+      run: echo -n "\n\nprocess.exit()" >> ./src/app.js
+    
+    - name: Generate signed SBOM for repo content
+      uses: scribe-security/action-bom@master
+      with:
+        target: 'git:.'
+        scribe-enable: true
+        components: packages,files,dep 
+        product-key: scribe-demo-prod-v1
+        scribe-client-id: ${{ secrets.CLIENT_ID }}
+        scribe-client-secret: ${{ secrets.CLIENT_SECRET }}
+        format: attest
+        app-name: $LOGICAL_APP_NAME
+        app-version: 1-24-${{github.run_number}}
+        author-name: $AUTHOR_NAME
+        author-email: $AUTHOR_EMAIL
+        author-phone: $AUTHOR_PHONE
+        supplier-name: $SUPPLIER_NAME
+        supplier-url: $SUPPLIER_URL
+        supplier-email: $SUPPLIER_EMAIL 
+        supplier-phone: $SUPPLIER_PHONE
+
+    - name: Build the Docker image
+      run: docker build . -t scribe-demo-product:${{ github.sha }}
+
+    - name: Generate signed SBOM for docker image
+      uses: scribe-security/action-bom@master
+      with:
+        target: 'docker:scribe-demo-product:${{ github.sha }}'
+        scribe-enable: true
+        components: packages,files,dep
+        product-key: scribe-demo-prod-v1
+        scribe-client-id: ${{ secrets.CLIENT_ID }}
+        scribe-client-secret: ${{ secrets.CLIENT_SECRET }}
+        format: attest
+        app-name: $LOGICAL_APP_NAME
+        app-version: 1-24-${{github.run_number}}
+        author-name: $AUTHOR_NAME
+        author-email: $AUTHOR_EMAIL
+        author-phone: $AUTHOR_PHONE
+        supplier-name: $SUPPLIER_NAME
+        supplier-url: $SUPPLIER_URL
+        supplier-email: $SUPPLIER_EMAIL 
+        supplier-phone: $SUPPLIER_PHONE
