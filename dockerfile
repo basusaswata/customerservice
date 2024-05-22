@@ -11,5 +11,5 @@ COPY ./target/customerservice-0.0.1-SNAPSHOT customerservice-0.0.1-SNAPSHOT
 # Expose port (replace with your application's port)
 EXPOSE 8081
 
-# Start the application using the JAR
+# Start the application using the JAR 
 ENTRYPOINT ["java", "-jar", "customerservice-0.0.1-SNAPSHOT"] 
