@@ -14,5 +14,5 @@ jobs:
     - name: Snyk test
       run: snyk test
       env:
-        SNYK_TOKEN: 'e1e42d77-3403-46bd-aa5d-e72459ee8899'
+        SNYK_TOKEN: '26f826df-809e-40b6-8307-040f15de3b9f'
 
