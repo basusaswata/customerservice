@@ -103,3 +103,16 @@ jobs:
         supplier-url: $SUPPLIER_URL
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
+        
+    - name: Generate SLSA provenance statement
+      id: valint_slsa_statement
+      uses: scribe-security/action-bom@master
+      with:
+         target: 'docker:${{ github.repository }}:${{ github.sha }}'
+         format: statement-slsa
+         
+    - name: Upload SLSA provenance statement
+      uses: actions/upload-artifact@v3
+      with:
+         name: provenance
+         path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
