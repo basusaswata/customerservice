@@ -108,7 +108,7 @@ jobs:
       id: valint_slsa_statement
       uses: scribe-security/action-bom@master
       with:
-         target: 'docker:${{ github.repository }}:${{ github.sha }}'
+         target: 'docker:customer-service:${{ github.sha }}'
          format: statement-slsa
          
     - name: Upload SLSA provenance statement
