@@ -1,0 +1,18 @@
+ 
+name: Snyk example 
+on: 
+  workflow_dispatch:
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: snyk/actions/setup@master
+    - uses: actions/setup-go@v1
+      with:
+        go-version: "1.13"
+    - name: Snyk test
+      run: snyk test
+      env:
+        SNYK_TOKEN: 'e1e42d77-3403-46bd-aa5d-e72459ee8899'
+
