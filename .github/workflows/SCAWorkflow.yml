@@ -6,13 +6,9 @@ jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: snyk/actions/setup@master
-    - uses: actions/setup-go@v1
-      with:
-        go-version: "1.13"
-    - name: Snyk test
-      run: snyk test
-      env:
-        SNYK_TOKEN: '26f826df-809e-40b6-8307-040f15de3b9f'
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven@master
+        env:
+         SNYK_TOKEN: '26f826df-809e-40b6-8307-040f15de3b9f'
 
