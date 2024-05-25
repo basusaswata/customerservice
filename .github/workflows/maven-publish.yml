@@ -53,7 +53,15 @@ jobs:
         supplier-url: $SUPPLIER_URL
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
-        
+    - name: list scribe materials
+      run: ls ./scribe/valint  
+      
+    - name: list scribe materials
+      run: ls ./scribe
+
+    - name: list scribe materials
+      run: ls .
+      
     - name: Build with Maven
       run: mvn -B package --file pom.xml
       
@@ -117,8 +125,6 @@ jobs:
          target: 'docker:customer-service:${{ github.sha }}'
          format: attest-slsa    
          
-    - name: list scribe materials
-      run: find . -name ".valint.yaml" -print
       
     - name: List environment variables
       run: env
