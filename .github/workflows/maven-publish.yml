@@ -142,8 +142,5 @@ jobs:
          name: provenance
          path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
          
-    - name: Upload SLSA attestation statement
-      uses: actions/upload-artifact@v3
-      with:
-         name: provenance attestation
-         path: ${{ MY_VAR }}
+    - name: List environment variables
+      run: env
