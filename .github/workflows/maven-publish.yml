@@ -123,6 +123,10 @@ jobs:
     - name: List environment variables
       run: env
       
+    - name: Show GitHub context variables
+      run: echo "## GitHub Context" && echo ${{ toJson(github) }}
+    - name: Show Job context variables
+      run: echo "## Job Context" && echo ${{ toJson(job) }}
       
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
