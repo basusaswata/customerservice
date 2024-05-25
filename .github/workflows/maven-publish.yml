@@ -126,8 +126,11 @@ jobs:
       run: ls ./scribe/valint 
       
     - name: list scribe materials
-      run: find . -name "*provenance.sig*"
-
+      run: FILE_PATH=$(find . -name "*provenance.sig*")
+      
+    - name: export to env
+      run: echo "MY_VAR=$FILE_PATH" >> $GITHUB_ENV
+     
     - name: list scribe materials
       run: ls .
     - name: list scribe materials
@@ -143,4 +146,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
          name: provenance attestation
-         path: find . -name "*provenance.sig*"
+         path: ${{ MY_VAR }}
