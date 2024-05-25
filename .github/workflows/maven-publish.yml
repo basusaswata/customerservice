@@ -119,7 +119,11 @@ jobs:
          
     - name: list scribe materials
       run: ls ./scribe/valint
-    
+      
+    - name: List environment variables
+      run: env
+      
+      
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
