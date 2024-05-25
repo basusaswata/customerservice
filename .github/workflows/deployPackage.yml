@@ -3,8 +3,6 @@ name: Deploy Package
 
 on:
    workflow_run:
-    workflows: ['build']  # This workflow listens to the 'build' workflow
-    types: [completed]
 env:
   IMAGE_NAME: ${{ github.repository }}:${{ github.sha }}
   AUTHOR_NAME: Sas
