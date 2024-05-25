@@ -122,11 +122,8 @@ jobs:
       
     - name: List environment variables
       run: env
-      
-   
-    - name: Show Job context variables
-      run: echo "## Job Context" && echo ${{ toJson(job) }}
-      
+    - name: he he
+      run: ${{steps}}
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
