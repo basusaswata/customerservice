@@ -116,7 +116,9 @@ jobs:
       with:
          target: 'docker:customer-service:${{ github.sha }}'
          format: attest-slsa    
-
+         
+    - name: list scribe materials
+      run: ls ./scribe/valint
     
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
