@@ -14,15 +14,15 @@ attest:
   default: sigstore
   cocosign: 
     - name: my_policy
-          rules:
-            - name: tagged_git_rule
-              evidence:
-                signed: true
-                format-type: slsa
-                target_type: git
+    rules:
+      - name: tagged_git_rule
+        evidence:
+            signed: true
+            format-type: slsa
+            target_type: git
                 target_git_url: git@github.com:mycompany/somerepo.git 
                 branch: main
-              with:
+             with:
                 identity:
                   emails:
                   - bob@mycompany.com
