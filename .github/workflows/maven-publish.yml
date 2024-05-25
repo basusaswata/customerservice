@@ -139,8 +139,8 @@ jobs:
          name: provenance
          path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
          
-    - name: Upload SLSA provenance statement
+    - name: Upload SLSA attestation statement
       uses: actions/upload-artifact@v3
       with:
          name: provenance
-         path: ${{ steps.valint_slsa_attestaiton.outputs.OUTPUT_PATH }}
+         path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}/../${{ github.sha }}.provenance.sig.json
