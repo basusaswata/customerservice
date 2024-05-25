@@ -42,13 +42,7 @@ jobs:
     - name: Build the Docker image
       run: docker build . -t customer-service:${{ github.sha }}
 
-   
-        
-    - name: Attest SLSA provenance statement
-      uses: scribe-security/action-bom@master
-      with:
-         target: 'docker:customer-service:${{ github.sha }}'
-         format: attest-slsa    
+
          
     - name: valint verify attest slsa
       id: valint_verify
