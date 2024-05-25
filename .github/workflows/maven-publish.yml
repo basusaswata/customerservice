@@ -123,7 +123,7 @@ jobs:
     - name: List environment variables
       run: env
     - name: he he
-      run: ${{steps}}
+      run: echo ${{steps}}
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
