@@ -126,7 +126,7 @@ jobs:
       run: ls ./scribe/valint 
       
     - name: list scribe materials
-      run: find . -name "*sig*"
+      run: find . -name "*provenance.sig*"
 
     - name: list scribe materials
       run: ls .
@@ -143,4 +143,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
          name: provenance attestation
-         path: find . -name "*sig*"
+         path: find . -name "*provenance.sig*"
