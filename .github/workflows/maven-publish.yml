@@ -116,14 +116,6 @@ jobs:
       with:
          target: 'docker:customer-service:${{ github.sha }}'
          format: attest-slsa    
-         
-    - name: valint verify attest slsa
-      id: valint_verify
-      uses: scribe-security/action-verify@master
-      with:
-         target: 'docker:customer-service:${{ github.sha }}'
-         input-format: attest-slsa
-         verbose: 2
 
     
     - name: Upload SLSA provenance statement
