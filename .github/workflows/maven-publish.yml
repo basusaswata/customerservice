@@ -111,6 +111,11 @@ jobs:
          target: 'docker:customer-service:${{ github.sha }}'
          format: statement-slsa
          
+    - name: Attest SLSA provenance statement
+      uses: scribe-security/action-bom@master
+      with:
+         target: 'docker:customer-service:${{ github.sha }}'
+         format: attest-slsa     
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
