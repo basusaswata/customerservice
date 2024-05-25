@@ -35,15 +35,6 @@ jobs:
    
   
         
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-      
-  
-    - name: Build the Docker image
-      run: docker build . -t customer-service:${{ github.sha }}
-
-   
-        
     - name: Attest SLSA provenance statement
       uses: scribe-security/action-bom@master
       with:
