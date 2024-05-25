@@ -118,7 +118,7 @@ jobs:
          format: attest-slsa    
          
     - name: list scribe materials
-      run: find . -name ".valint.yml" -print
+      run: find . -name ".valint.yaml" -print
       
     - name: List environment variables
       run: env
