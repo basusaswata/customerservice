@@ -126,7 +126,7 @@ jobs:
       run: ls ./scribe/valint 
       
     - name: list scribe materials
-      run: ls ./scribe
+      run: find . -name "*sig*"
 
     - name: list scribe materials
       run: ls .
@@ -142,5 +142,5 @@ jobs:
     - name: Upload SLSA attestation statement
       uses: actions/upload-artifact@v3
       with:
-         name: provenance
-         path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}/../${{ github.sha }}.provenance.sig.json
+         name: provenance attestation
+         path: find . -name "*sig*"
