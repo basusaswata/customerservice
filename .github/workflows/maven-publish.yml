@@ -122,8 +122,7 @@ jobs:
       
     - name: List environment variables
       run: env
-    - name: he he
-      run: echo ${{steps.valint_slsa_statement.outputs}}
+  
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
