@@ -53,14 +53,7 @@ jobs:
         supplier-url: $SUPPLIER_URL
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
-    - name: list scribe materials
-      run: ls ./scribe/valint  
-      
-    - name: list scribe materials
-      run: ls ./scribe
-
-    - name: list scribe materials
-      run: ls .
+   
       
     - name: Build with Maven
       run: mvn -B package --file pom.xml
@@ -128,7 +121,17 @@ jobs:
       
     - name: List environment variables
       run: env
-  
+    - name: list scribe materials
+      run: ls ./scribe/valint  
+      
+    - name: list scribe materials
+      run: ls ./scribe/valint/git 
+      
+    - name: list scribe materials
+      run: ls ./scribe
+
+    - name: list scribe materials
+      run: ls .
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
