@@ -122,7 +122,7 @@ jobs:
     - name: List environment variables
       run: env
     - name: list scribe materials
-      run: ls ./scribe/valint  
+      run: ls /home/scribe/valint  
       
     - name: list scribe materials
       run: ls ./scribe/valint/git 
