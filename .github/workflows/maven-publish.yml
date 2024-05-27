@@ -53,6 +53,7 @@ jobs:
         supplier-url: $SUPPLIER_URL
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
+        code-event: $GITHUB_EVENT_NAME
    
       
     - name: Build with Maven
