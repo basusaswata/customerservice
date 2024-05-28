@@ -34,7 +34,11 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-   
+    - name: Secret Scanner
+      uses: secret-scanner/action@0.0.2       
+      with: 
+         baseline-file: './.secrets.baseline'
+    
     - name: Generate signed SBOM for repo content
       uses: scribe-security/action-bom@master
       with:
@@ -82,7 +86,7 @@ jobs:
     - name: Secret Scanner
       uses: secret-scanner/action@0.0.2       
       with: 
-         baseline_file: './.secrets.baseline'
+         baseline-file: './.secrets.baseline'
       
     # - name: list few things
     #   run: ls
