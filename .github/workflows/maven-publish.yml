@@ -16,7 +16,7 @@ env:
   SUPPLIER_PHONE: 001-001-0011
   USER_DATA: service-binding
   SCANNER_ARGS: |
-      --exclude-files \.github/workflows/.*
+      --exclude-files \.github/workflows/*.yml
       --exclude-lines ^\s+with\s+imageTag\s*=.*$
 jobs:
   build:
