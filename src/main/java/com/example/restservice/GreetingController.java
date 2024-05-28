@@ -18,7 +18,7 @@ public class GreetingController {
 
 	@GetMapping("/greeting")
 	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		String password = "adasdd";
+		String awskey = "0fbb74dsfg86087sfsdf987234retg044ggge";
 		return new Greeting(counter.incrementAndGet(), String.format(template, name));
 	}
 	
