@@ -87,7 +87,7 @@ jobs:
       uses: secret-scanner/action@0.0.2       
       with: 
          baseline-file: './.secrets.baseline'
-         exclude_files_path: './github/workflows'
+         exclude_files_path: .github/workflows/
       
     # - name: list few things
     #   run: ls
