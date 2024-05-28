@@ -18,7 +18,7 @@ public class GreetingController {
 
 	@GetMapping("/greeting")
 	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		String scribe-client-secret= "c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA==";
+		
 		return new Greeting(counter.incrementAndGet(), String.format(template, name));
 	}
 	
