@@ -47,7 +47,7 @@ jobs:
         scribe-enable: true
         components: packages,files,dep
         product-key: "sas-customer-service"
-        
+        scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
         format: attest
         product-version: "version_prod_sprint37_01"
         author-name: $AUTHOR_NAME
@@ -104,6 +104,7 @@ jobs:
         target: 'docker:customer-service:${{ github.sha }}'
         scribe-enable: true
         product-key: "sas-customer-service"
+        scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
         format: attest
         product-version: "version_prod_sprint37_01"
         force: true
