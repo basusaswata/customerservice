@@ -43,7 +43,7 @@ jobs:
         label: is_git_commit
         format: attest
         product-version: "sas_customer-service"
-        
+        scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
         author-name: $AUTHOR_NAME
         author-email: $AUTHOR_EMAIL
         author-phone: $AUTHOR_PHONE
