@@ -1,7 +1,6 @@
 ---
 applications:
 - name: gs-rest-service
-  awskey: "0fbb74dsfg86087sfsdf987234retg044ggge"
   memory: 256M
   instances: 1
   host: rest-service
