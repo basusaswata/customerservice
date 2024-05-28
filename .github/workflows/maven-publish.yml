@@ -81,6 +81,8 @@ jobs:
            
     - name: Secret Scanner
       uses: secret-scanner/action@0.0.2       
+      with: 
+         baseline_file: './.secrets.baseline'
       
     # - name: list few things
     #   run: ls
