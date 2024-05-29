@@ -49,7 +49,7 @@ jobs:
       run: |
         valint --version
         valint bom docker:customer-service:${{ github.sha }} -o statement-cyclonedx-json
-        valint slsa docker:customer-service:${{ github.sha }} -o attest -f -output-file .
+        valint slsa docker:customer-service:${{ github.sha }} -output-file . -o attest -f 
         ls
         pwd
     - name: valint verify
