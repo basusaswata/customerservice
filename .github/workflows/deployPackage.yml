@@ -48,13 +48,13 @@ jobs:
     - name: valint run
       run: |
         valint --version
-        valint bom docker:customer-service:${{ github.sha }} -o statement-cyclonedx-json
-        valint slsa docker:customer-service:${{ github.sha }} -output-file . -o attest -f 
+        #valint bom docker:customer-service:${{ github.sha }} -o statement-cyclonedx-json
+        valint slsa docker:customer-service:${{ github.sha }} -o attest-slsa -f 
         ls
         pwd
     - name: valint verify
       run: |
-        valint verify docker:customer-service:${{ github.sha }} -i attest
+        valint verify docker:customer-service:${{ github.sha }} -i attest-slsa -f
          
     # - name: valint verify attest slsa
     #   id: valint_verify
