@@ -93,7 +93,7 @@ jobs:
          target: 'docker:customer-service:${{ github.sha }}'
          input-format: attest-slsa
          verbose: 2
-         rule: slsa/verify-builder@v1
+         rule: slsa/verify-builder@v1,slsa/artifact-signed@v1
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
