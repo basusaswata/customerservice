@@ -41,7 +41,7 @@ jobs:
     - name: Pull Docker image
       run: | 
          docker login --username basu.saswata@gmail.com --password Kachhumutu5%
-         docker pull basusaswata/${{ github.repository }}
+         docker pull ${{ github.repository }}
   
     # - name: Get docker image
     #   run: docker build . -t ${{ github.repository }}
@@ -115,7 +115,7 @@ jobs:
       id: valint_verify
       uses: scribe-security/action-verify@master
       with:
-         target: 'docker:customer-service:${{ github.sha }}'
+         target: 'docker:${{ github.repository }}'
          input-format: attest-slsa
          verbose: 2
          rule: slsa/verify-builder@v1,slsa/artifact-signed@v1
