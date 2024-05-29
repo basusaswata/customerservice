@@ -93,9 +93,9 @@ jobs:
          target: 'docker:customer-service:${{ github.sha }}'
          input-format: attest-slsa
          verbose: 2
-         rule: git/no-commit-to-main@v1,verify-labels-exist@v1
+         rule: git/no-commit-to-main@v1,sbom/fresh-sbom@v1
     - name: Upload SLSA provenance statement
-      uses: actions/upload-artifact@v3,sbom/fresh-sbom@v1
+      uses: actions/upload-artifact@v3
       with:
          name: provenance
          path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
