@@ -69,13 +69,16 @@ jobs:
       with:
          target: 'docker:customer-service:${{ github.sha }}'
          format: statement-slsa
+         external: 
+            mypara:myvalue
          
     - name: Attest SLSA provenance statement
       uses: scribe-security/action-bom@master
       with:
          target: 'docker:customer-service:${{ github.sha }}'
          format: attest-slsa    
-         
+         external: 
+            mypara:myvalue
     # - name: valint run
     #   run: |
     #     valint --version
@@ -93,7 +96,11 @@ jobs:
          input-format: attest-slsa
          verbose: 2
          rule: git/no-commit-to-main@v1
-
+    - name: Upload SLSA provenance statement
+      uses: actions/upload-artifact@v3
+      with:
+         name: provenance
+         path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
     # - name: valint verify
     #   run: |
     #     valint verify docker:customer-service:${{ github.sha }} -i attest-slsa -f -vv
