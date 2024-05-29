@@ -50,6 +50,12 @@ jobs:
         valint --version
         valint bom busybox:latest -vv
         valint bom docker:customer-service:${{ github.sha }} -o statement-cyclonedx-json
+        valint SLSA docker:customer-service:${{ github.sha }} -o attest -f
+        ls
+        pwd
+    - name: valint verify
+      run: |
+        valint verify docker:customer-service:${{ github.sha }} -i attest
          
     # - name: valint verify attest slsa
     #   id: valint_verify
