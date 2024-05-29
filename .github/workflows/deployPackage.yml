@@ -42,8 +42,8 @@ jobs:
     - name: Build the Docker image
       run: docker build . -t customer-service:${{ github.sha }}
 
-    # - name: install valint
-    #   uses: scribe-security/action-installer@master
+    - name: install valint
+      uses: scribe-security/action-installer@master
       
     # - name: Generate signed SBOM for docker image
     #   uses: scribe-security/action-bom@master
@@ -71,15 +71,16 @@ jobs:
          format: statement-slsa
          env: all-env
          
-    - name: Attest SLSA provenance statement
-      uses: scribe-security/action-bom@master
-      with:
-         target: 'docker:customer-service:${{ github.sha }}'
-         format: attest-slsa    
-         attest.default: x509
-         key: ./certs/server.key
-         cert: ./certs/server.crt
-         ca: ./certs/rootCA.crt
+    # - name: Attest SLSA provenance statement
+    #   uses: scribe-security/action-bom@master
+    #   with:
+    #      target: 'docker:customer-service:${{ github.sha }}'
+    #      format: attest-slsa    
+    #      attest.default: x509
+    #      key: ./certs/server.key
+    #      cert: ./certs/server.crt
+    #      ca: ./certs/rootCA.crt
+    
     # - name: valint run
     #   run: |
     #     valint --version
@@ -87,7 +88,10 @@ jobs:
     #     valint slsa docker:customer-service:${{ github.sha }} -o attest-slsa -f 
     #     ls
     #     pwd
-   
+    
+    - name: Attest SLSA provenance statement -valint cmd
+      run: |
+        valint bom docker:customer-service:${{ github.sha }} --format=attest-slsa --attest.default x509 --ca=./certs/rootCA.crt --cert=./certs/server.crt --context-type=github --key=./certs/server.key --output-directory=./scribe/valint
          
     - name: valint verify attest slsa
       id: valint_verify
@@ -102,6 +106,4 @@ jobs:
       with:
          name: provenance
          path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
-    # - name: valint verify
-    #   run: |
-    #     valint verify docker:customer-service:${{ github.sha }} -i attest-slsa -f -vv
+   
