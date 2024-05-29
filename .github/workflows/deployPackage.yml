@@ -52,14 +52,16 @@ jobs:
         valint slsa docker:customer-service:${{ github.sha }} -o attest-slsa -f 
         ls
         pwd
+   
+         
+    - name: valint verify attest slsa
+      id: valint_verify
+      uses: scribe-security/action-verify@master
+      with:
+         target: 'docker:customer-service:${{ github.sha }}'
+         input-format: attest-slsa
+         verbose: 2
+
     - name: valint verify
       run: |
-        valint verify docker:customer-service:${{ github.sha }} -i attest-slsa -f
-         
-    # - name: valint verify attest slsa
-    #   id: valint_verify
-    #   uses: scribe-security/action-verify@master
-    #   with:
-    #      target: 'docker:customer-service:${{ github.sha }}'
-    #      input-format: attest-slsa
-    #      verbose: 2
+        valint verify docker:customer-service:${{ github.sha }} -i attest-slsa -f -vv
