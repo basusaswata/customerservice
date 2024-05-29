@@ -42,8 +42,8 @@ jobs:
     - name: Build the Docker image
       run: docker build . -t customer-service:${{ github.sha }}
 
-    - name: install valint
-      uses: scribe-security/action-installer@master
+    # - name: install valint
+    #   uses: scribe-security/action-installer@master
       
     - name: Generate signed SBOM for docker image
       uses: scribe-security/action-bom@master
@@ -92,7 +92,8 @@ jobs:
          target: 'docker:customer-service:${{ github.sha }}'
          input-format: attest-slsa
          verbose: 2
+         rule: sbom/complete-licenses@v1
 
-    - name: valint verify
-      run: |
-        valint verify docker:customer-service:${{ github.sha }} -i attest-slsa -f -vv
+    # - name: valint verify
+    #   run: |
+    #     valint verify docker:customer-service:${{ github.sha }} -i attest-slsa -f -vv
