@@ -76,7 +76,6 @@ jobs:
       with:
          target: 'docker:customer-service:${{ github.sha }}'
          format: attest-slsa    
-         env: all-env
          attest.default: x509
          key: ./certs/server.key
          cert: ./certs/server.crt
