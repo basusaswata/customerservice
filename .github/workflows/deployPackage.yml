@@ -69,14 +69,14 @@ jobs:
       with:
          target: 'docker:customer-service:${{ github.sha }}'
          format: statement-slsa
-         env: ''
+         env: all-env
          
     - name: Attest SLSA provenance statement
       uses: scribe-security/action-bom@master
       with:
          target: 'docker:customer-service:${{ github.sha }}'
          format: attest-slsa    
-         env: ''
+         env: all-env
     # - name: valint run
     #   run: |
     #     valint --version
