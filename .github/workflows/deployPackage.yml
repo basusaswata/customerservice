@@ -94,6 +94,13 @@ jobs:
         ls ./scribe/valint
         valint bom docker:customer-service:${{ github.sha }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
         ls 
+    
+    - name: Verify attestaiton -valint cmd
+      run: |
+        ls ./scribe/valint
+        valint verify docker:customer-service:${{ github.sha }} input-format=attest-slsa --rule=slsa/verify-builder@v1,slsa/artifact-signed@v1 --context-type=github --verbose=2 --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem
+        ls 
+        
     - name: valint verify attest slsa
       id: valint_verify
       uses: scribe-security/action-verify@master
