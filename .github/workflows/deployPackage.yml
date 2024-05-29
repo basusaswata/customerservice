@@ -78,9 +78,9 @@ jobs:
          format: attest-slsa    
          env: all-env
          attest.default: x509
-         key: server.key
-         cert: server.crt
-         ca: rootCA.crt
+         key: ./certs/server.key
+         cert: ./certs/server.crt
+         ca: ./certs/rootCA.crt
     # - name: valint run
     #   run: |
     #     valint --version
