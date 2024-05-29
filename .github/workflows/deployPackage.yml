@@ -63,18 +63,18 @@ jobs:
     #     supplier-email: $SUPPLIER_EMAIL 
     #     supplier-phone: $SUPPLIER_PHONE
         
-    # - name: Generate SLSA provenance statement
-    #   id: valint_slsa_statement
-    #   uses: scribe-security/action-bom@master
-    #   with:
-    #      target: 'docker:customer-service:${{ github.sha }}'
-    #      format: statement-slsa
+    - name: Generate SLSA provenance statement
+      id: valint_slsa_statement
+      uses: scribe-security/action-bom@master
+      with:
+         target: 'docker:customer-service:${{ github.sha }}'
+         format: statement-slsa
          
-    # - name: Attest SLSA provenance statement
-    #   uses: scribe-security/action-bom@master
-    #   with:
-    #      target: 'docker:customer-service:${{ github.sha }}'
-    #      format: attest-slsa    
+    - name: Attest SLSA provenance statement
+      uses: scribe-security/action-bom@master
+      with:
+         target: 'docker:customer-service:${{ github.sha }}'
+         format: attest-slsa    
          
     # - name: valint run
     #   run: |
