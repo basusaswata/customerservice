@@ -91,7 +91,7 @@ jobs:
     
     - name: Attest SLSA provenance statement -valint cmd
       run: |
-        valint bom docker:customer-service:${{ github.sha }} --format=attest-slsa --attest.default x509 --ca=./certs/rootCA.crt --cert=./certs/server.crt --context-type=github --key=./certs/server.key --output-directory=./scribe/valint
+        valint bom docker:customer-service:${{ github.sha }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key --output-directory=./scribe/valint
          
     - name: valint verify attest slsa
       id: valint_verify
