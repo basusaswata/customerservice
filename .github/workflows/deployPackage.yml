@@ -77,6 +77,10 @@ jobs:
          target: 'docker:customer-service:${{ github.sha }}'
          format: attest-slsa    
          env: all-env
+         attest.default: x509
+         key: server.key
+         cert: server.crt
+         ca: rootCA.crt
     # - name: valint run
     #   run: |
     #     valint --version
