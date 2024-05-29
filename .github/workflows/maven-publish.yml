@@ -103,7 +103,7 @@ jobs:
       run: | 
          docker build . -t customer-service:${{ github.sha }}
          docker login --username basu.saswata@gmail.com --password Kachhumutu5%
-         docker push basusaswata/customer-service:${{ github.sha }}
+         docker push customer-service:${{ github.sha }}
          
 
     - name: Generate signed SBOM for docker image
