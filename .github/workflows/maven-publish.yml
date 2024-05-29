@@ -101,15 +101,15 @@ jobs:
           
     - name: Build and push Docker image
       run: | 
-         docker build . -t basusaswata/${{ github.repository }}
+         docker build . -t ${{ github.repository }}
          docker login --username basu.saswata@gmail.com --password Kachhumutu5%
-         docker push basusaswata/${{ github.repository }}
+         docker push ${{ github.repository }}
          
 
     - name: Generate signed SBOM for docker image
       uses: scribe-security/action-bom@master
       with:
-        target: 'basusaswata/docker:${{ github.repository }}'
+        target: 'docker:${{ github.repository }}'
         scribe-enable: true
         product-key: "sas-customer-service"
         scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
@@ -128,7 +128,7 @@ jobs:
       id: valint_slsa_statement
       uses: scribe-security/action-bom@master
       with:
-         target: 'docker:basusaswata/${{ github.repository }}'
+         target: 'docker:${{ github.repository }}'
          format: statement-slsa
          
     - name: Attest SLSA provenance statement
