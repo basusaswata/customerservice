@@ -97,9 +97,17 @@ jobs:
       
     # - name: current directory
     #   run: pwd
-      
-    - name: Build the Docker image
-      run: docker build . -t customer-service:${{ github.sha }}
+    - name: Log in to Docker Hub
+      uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      with:
+          username: basu.saswata@gmail.com
+          password: Kachhumutu5%
+          
+    - name: Build and push Docker image
+      run: | 
+         docker build . -t customer-service:${{ github.sha }}
+         docker push customer-service:${{ github.sha }}:latest
+         
 
     - name: Generate signed SBOM for docker image
       uses: scribe-security/action-bom@master
