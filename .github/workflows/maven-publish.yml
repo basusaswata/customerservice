@@ -134,7 +134,7 @@ jobs:
     - name: Attest SLSA provenance statement
       uses: scribe-security/action-bom@master
       with:
-         target: 'docker:basusaswata/${{ github.repository }}'
+         target: 'docker:${{ github.repository }}'
          format: attest-slsa    
          
       
