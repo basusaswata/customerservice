@@ -92,7 +92,7 @@ jobs:
          target: 'docker:customer-service:${{ github.sha }}'
          input-format: attest-slsa
          verbose: 2
-         rule: sbom/complete-licenses@v1
+         rule: slsa/evidence-exists@v1
 
     # - name: valint verify
     #   run: |
