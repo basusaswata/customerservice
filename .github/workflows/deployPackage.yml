@@ -89,19 +89,19 @@ jobs:
     #     ls
     #     pwd
     
-    - name: Attest SLSA provenance statement -valint cmd
+    - name: Generate attestation of SLSA provenance statement -valint cmd
       run: |
         ls ./scribe/valint
         valint bom docker:customer-service:${{ github.sha }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
         ls 
     
-    - name: Verify attestaiton -valint cmd
+    - name: Verify attestaiton signature -valint cmd
       run: |
         ls ./scribe/valint
         valint verify docker:customer-service:${{ github.sha }} input-format=attest-slsa --context-type=github --verbose=2 --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt
         ls 
         
-    - name: valint verify attest slsa
+    - name: verify other policies slsa
       id: valint_verify
       uses: scribe-security/action-verify@master
       with:
@@ -109,6 +109,7 @@ jobs:
          input-format: attest-slsa
          verbose: 2
          rule: slsa/verify-builder@v1,slsa/artifact-signed@v1
+         
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
