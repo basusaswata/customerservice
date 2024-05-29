@@ -45,36 +45,36 @@ jobs:
     # - name: install valint
     #   uses: scribe-security/action-installer@master
       
-    - name: Generate signed SBOM for docker image
-      uses: scribe-security/action-bom@master
-      with:
-        target: 'docker:customer-service:${{ github.sha }}'
-        scribe-enable: true
-        product-key: "sas-customer-service"
-        scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
-        format: attest
-        product-version: "version_prod_sprint37_01"
-        force: true
-        author-name: $AUTHOR_NAME
-        author-email: $AUTHOR_EMAIL
-        author-phone: $AUTHOR_PHONE
-        supplier-name: $SUPPLIER_NAME
-        supplier-url: $SUPPLIER_URL
-        supplier-email: $SUPPLIER_EMAIL 
-        supplier-phone: $SUPPLIER_PHONE
+    # - name: Generate signed SBOM for docker image
+    #   uses: scribe-security/action-bom@master
+    #   with:
+    #     target: 'docker:customer-service:${{ github.sha }}'
+    #     scribe-enable: true
+    #     product-key: "sas-customer-service"
+    #     scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
+    #     format: attest
+    #     product-version: "version_prod_sprint37_01"
+    #     force: true
+    #     author-name: $AUTHOR_NAME
+    #     author-email: $AUTHOR_EMAIL
+    #     author-phone: $AUTHOR_PHONE
+    #     supplier-name: $SUPPLIER_NAME
+    #     supplier-url: $SUPPLIER_URL
+    #     supplier-email: $SUPPLIER_EMAIL 
+    #     supplier-phone: $SUPPLIER_PHONE
         
-    - name: Generate SLSA provenance statement
-      id: valint_slsa_statement
-      uses: scribe-security/action-bom@master
-      with:
-         target: 'docker:customer-service:${{ github.sha }}'
-         format: statement-slsa
+    # - name: Generate SLSA provenance statement
+    #   id: valint_slsa_statement
+    #   uses: scribe-security/action-bom@master
+    #   with:
+    #      target: 'docker:customer-service:${{ github.sha }}'
+    #      format: statement-slsa
          
-    - name: Attest SLSA provenance statement
-      uses: scribe-security/action-bom@master
-      with:
-         target: 'docker:customer-service:${{ github.sha }}'
-         format: attest-slsa    
+    # - name: Attest SLSA provenance statement
+    #   uses: scribe-security/action-bom@master
+    #   with:
+    #      target: 'docker:customer-service:${{ github.sha }}'
+    #      format: attest-slsa    
          
     # - name: valint run
     #   run: |
