@@ -106,7 +106,7 @@ jobs:
     - name: Build and push Docker image
       run: | 
          docker build . -t customer-service:${{ github.sha }}
-         docker push customer-service:${{ github.sha }}:latest
+         docker push customer-service:${{ github.sha }}
          
 
     - name: Generate signed SBOM for docker image
