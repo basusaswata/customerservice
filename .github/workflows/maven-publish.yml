@@ -48,8 +48,8 @@ jobs:
     - name: Generate Source BOM and attestation -valint cmd
       run: |
         valint
-        valint bom git:. -o statement -f --all-env
-        valint bom git:. -o attest -f --all-env
+        valint bom git:. -o statement -f 
+        valint bom git:. -o attest -f 
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         echo "############### My API key is: ${{ secrets.DOCKPAS }}"
         ls
