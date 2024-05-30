@@ -42,19 +42,20 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         
-    - name: install valint
-      uses: scribe-security/action-installer@master
+    # - name: install valint
+    #   uses: scribe-security/action-installer@master
       
-    - name: Generate Source BOM -valint cmd
-      run: |
-        valint slsa git:. -o statement
-        valint verify git:. -i statement --rule v1/git/no-commit-to-main
-        ls
+    # - name: Generate Source BOM -valint cmd
+    #   run: |
+    #     valint slsa git:. -o statement
+    #     valint verify git:. -i statement --rule v1/git/no-commit-to-main
+    #     ls
 
     - name: Generate Source BOM
       uses: scribe-security/action-bom@master
       with:
         target: 'git:.'
+        all-env: true
         scribe-enable: true
         components: packages,files,dep
         product-key: "sas-customer-service"
@@ -69,6 +70,7 @@ jobs:
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
         force: true
+        verbose: 2
         
     - name: Verify Source BOM
       uses: scribe-security/action-verify@master
