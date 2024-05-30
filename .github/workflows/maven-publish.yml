@@ -54,7 +54,7 @@ jobs:
       run: |
         ls /home/runner/.cache/valint
         echo ${{ github.sha }}
-        cat /home/runner/.cache/valint/${{ github.sha }}.provenance.statement.json
+        cat /home/runner/.cache/valint/$sha1-{{ github.sha }}.provenance.statement.json
     - name: Generate Source BOM
       uses: scribe-security/action-bom@master
       with:
