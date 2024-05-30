@@ -73,11 +73,11 @@ jobs:
     # - name: display slsa
     #   run: |
     #      cat scribe/valint/${{ github.sha }}.provenance.statement.json
-    - name: Upload Source SLSA statement
-      # uses: actions/upload-artifact@v3
-      # with:
-      #    name: Source SLSA
-      #    path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
+    # - name: Upload Source SLSA statement
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #      name: Source SLSA
+    #      path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
          
     - name: Verify Source BOM
       uses: scribe-security/action-verify@master
