@@ -40,7 +40,7 @@ jobs:
 
     - name: Pull Docker image
       run: | 
-         docker login --username basu.saswata@gmail.com --password Kachhumutu5%
+         docker login --username basu.saswata@gmail.com --password ${{ secrets.DOCKPAS }}
          docker pull ${{ github.repository }}
   
     # - name: Get docker image
