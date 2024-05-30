@@ -51,6 +51,7 @@ jobs:
         valint bom git:. -o statement -f
         valint bom git:. -o attest -f
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
+        echo "############### My API key is: ${{ secrets.DOCKPAS }}"
         ls
     - name: Verify Source BOM and attestation -valint cmd
       run: |
