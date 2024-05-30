@@ -69,16 +69,15 @@ jobs:
         supplier-url: $SUPPLIER_URL
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
-        force: true
         verbose: 2
     - name: display slsa
       run: |
-         cat ./scribe/valint/${{ github.sha }}.provenance.statement.json
+         cat scribe/valint/${{ github.sha }}.provenance.statement.json
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
       with:
          name: provenance
-         path: ./scribe/valint/${{ github.sha }}.provenance.statement.json
+         path: scribe/valint/${{ github.sha }}.provenance.statement.json
          
     - name: Verify Source BOM
       uses: scribe-security/action-verify@master
