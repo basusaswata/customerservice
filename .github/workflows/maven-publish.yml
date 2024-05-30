@@ -50,11 +50,11 @@ jobs:
         valint
         valint bom git:. -o statement -f
         valint bom git:. -o attest -f
-        valint verify git:. -i attest --rule git/no-commit-to-main@v1
+        #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         ls
     - name: Verify Source BOM and attestation -valint cmd
       run: |
-        valint verify git:. -i attest --rule git/no-commit-to-main@v1
+        valint verify git:. -i attest --rule git/no-commit-to-main@v1,git/coding-permissions@v1
         ls
         
     # - name: Generate Source BOM -valint cmd
