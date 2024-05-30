@@ -69,12 +69,13 @@ jobs:
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
         code-event: ${{github.event_name}}
+        force: true
         
     - name: Verify Source BOM
       uses: scribe-security/action-verify@master
       with:
         target: 'git:.'
-        input-format: statement
+        #input-format: statement
         verbose: 2
         rule: git/no-commit-to-main@v1,git/coding-permissions@v1
       
