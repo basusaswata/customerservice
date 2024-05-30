@@ -45,38 +45,50 @@ jobs:
     - name: install valint
       uses: scribe-security/action-installer@master
       
-    - name: Generate Source BOM -valint cmd
+    - name: Generate Source BOM and attestation -valint cmd
       run: |
         valint
         valint bom git:. -o statement -f
         valint bom git:. -o attest -f
         valint verify git:. -i attest --rule git/no-commit-to-main@v1
         ls
+    - name: Verify Source BOM and attestation -valint cmd
+      run: |
+        valint verify git:. -i attest --rule git/no-commit-to-main@v1
+        ls
+        
     - name: Generate Source BOM -valint cmd
       run: |
         ls /home/runner/.cache/valint
         echo ${{ github.sha }}
         cat /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.statement.json
-        cat /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.sig.json
-    - name: Generate Source BOM
-      uses: scribe-security/action-bom@master
+        #cat /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.sig.json
+  
+    - name: Upload Source BOM 
+      uses: actions/upload-artifact@v3
       with:
-        target: 'git:.'
-        env: all-env
-        scribe-enable: true
-        #components: packages,files,dep
-        product-key: "sas-customer-service"
-        scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
-        format: statement-slsa
-        product-version: "version_prod_sprint37_01"
-        author-name: $AUTHOR_NAME
-        author-email: $AUTHOR_EMAIL
-        author-phone: $AUTHOR_PHONE
-        supplier-name: $SUPPLIER_NAME
-        supplier-url: $SUPPLIER_URL
-        supplier-email: $SUPPLIER_EMAIL 
-        supplier-phone: $SUPPLIER_PHONE
-        verbose: 2
+         name: Source BOM
+         path: /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.statement.json
+         
+    # - name: Generate Source BOM
+    #   uses: scribe-security/action-bom@master
+    #   with:
+    #     target: 'git:.'
+    #     env: all-env
+    #     scribe-enable: true
+    #     #components: packages,files,dep
+    #     product-key: "sas-customer-service"
+    #     scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
+    #     format: statement-slsa
+    #     product-version: "version_prod_sprint37_01"
+    #     author-name: $AUTHOR_NAME
+    #     author-email: $AUTHOR_EMAIL
+    #     author-phone: $AUTHOR_PHONE
+    #     supplier-name: $SUPPLIER_NAME
+    #     supplier-url: $SUPPLIER_URL
+    #     supplier-email: $SUPPLIER_EMAIL 
+    #     supplier-phone: $SUPPLIER_PHONE
+    #     verbose: 2
     # - name: display slsa
     #   run: |
     #      cat scribe/valint/${{ github.sha }}.provenance.statement.json
@@ -86,13 +98,13 @@ jobs:
     #      name: Source SLSA
     #      path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
          
-    - name: Verify Source BOM
-      uses: scribe-security/action-verify@master
-      with:
-        target: 'git:.'
-        #input-format: statement
-        verbose: 2
-        #rule: git/no-commit-to-main@v1,git/coding-permissions@v1,git/evidence-exists@v1
+    # - name: Verify Source BOM
+    #   uses: scribe-security/action-verify@master
+    #   with:
+    #     target: 'git:.'
+    #     #input-format: statement
+    #     verbose: 2
+    #     #rule: git/no-commit-to-main@v1,git/coding-permissions@v1,git/evidence-exists@v1
       
     - name: Build with Maven
       run: mvn -B package --file pom.xml
