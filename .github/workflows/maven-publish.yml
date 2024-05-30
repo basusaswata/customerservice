@@ -48,7 +48,6 @@ jobs:
     - name: Generate Source BOM -valint cmd
       run: |
         valint slsa git:. -o statement
-        cat scribe/valint/${{ github.sha }}.provenance.statement.json
         valint verify git:. -i statement --rule git/no-commit-to-main@v1
         ls
 
