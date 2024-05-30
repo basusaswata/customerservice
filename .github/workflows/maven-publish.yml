@@ -76,7 +76,7 @@ jobs:
         target: 'git:.'
         input-format: statement
         verbose: 2
-        rule: git/no-commit-to-main@v1
+        rule: git/no-commit-to-main@v1,coding-permissions@v1
       
     - name: Build with Maven
       run: mvn -B package --file pom.xml
