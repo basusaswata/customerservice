@@ -151,7 +151,7 @@ jobs:
     - name: Build and push Docker image
       run: | 
          docker build . -t ${{ github.repository }}
-         docker login --username basu.saswata@gmail.com --password Kachhumutu5%
+         docker login --username basu.saswata@gmail.com --password ${{ secrets.DOCKPAS }}
          docker push ${{ github.repository }}
          
 
