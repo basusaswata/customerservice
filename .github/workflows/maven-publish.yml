@@ -47,8 +47,9 @@ jobs:
       
     - name: Generate Source BOM -valint cmd
       run: |
-        valint slsa git:. -o statement -f
-        valint slsa git:. -o attest -f
+        valint
+        valint bom git:. -o statement -f
+        valint bom git:. -o attest -f
         valint verify git:. -i attest --rule git/no-commit-to-main@v1
         ls
     - name: Generate Source BOM -valint cmd
@@ -56,6 +57,7 @@ jobs:
         ls /home/runner/.cache/valint
         echo ${{ github.sha }}
         cat /home/runner/.cache/valint/sha1-${{ github.sha }}.provenance.statement.json
+        cat /home/runner/.cache/valint/sha1-${{ github.sha }}.provenance.sig.json
     - name: Generate Source BOM
       uses: scribe-security/action-bom@master
       with:
