@@ -47,7 +47,7 @@ jobs:
       
     - name: Generate Source BOM -valint cmd
       run: |
-        valint slsa git:. -i -o statement
+        valint slsa git:. -o statement
 
     - name: Generate Source BOM
       uses: scribe-security/action-bom@master
