@@ -48,7 +48,7 @@ jobs:
     - name: Generate Source BOM -valint cmd
       run: |
         valint slsa git:. -o statement
-        valint verify git:. -i statement --rule git/no-commit-to-main@v1
+        valint verify git:. -i statement --rule v1/git/no-commit-to-main
         ls
 
     - name: Generate Source BOM
@@ -69,7 +69,14 @@ jobs:
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
         code-event: ${{github.event_name}}
-   
+        
+    - name: Verify Source BOM
+      uses: scribe-security/action-verify@master
+      with:
+        target: 'git:.'
+        input-format: statement
+        verbose: 2
+        rule: git/no-commit-to-main@v1
       
     - name: Build with Maven
       run: mvn -B package --file pom.xml
