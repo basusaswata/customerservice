@@ -55,7 +55,7 @@ jobs:
       uses: scribe-security/action-bom@master
       with:
         target: 'git:.'
-        all-env: true
+        env: all-env
         scribe-enable: true
         components: packages,files,dep
         product-key: "sas-customer-service"
