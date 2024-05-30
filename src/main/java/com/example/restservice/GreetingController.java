@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/customer")
 public class GreetingController {
 
-	private static final String template = "hi, %s!";
+	private static final String template = "hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/greeting")
