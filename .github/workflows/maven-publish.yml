@@ -41,9 +41,15 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
- 
-    
-    - name: Generate signed SBOM for repo content
+        
+    - name: install valint
+      uses: scribe-security/action-installer@master
+      
+    - name: Generate Source BOM -valint cmd
+      run: |
+        valint slsa git:. -i -o statement
+
+    - name: Generate Source BOM
       uses: scribe-security/action-bom@master
       with:
         target: 'git:.'
