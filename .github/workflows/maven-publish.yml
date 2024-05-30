@@ -68,7 +68,6 @@ jobs:
         supplier-url: $SUPPLIER_URL
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
-        code-event: ${{github.event_name}}
         force: true
         
     - name: Verify Source BOM
@@ -77,7 +76,7 @@ jobs:
         target: 'git:.'
         #input-format: statement
         verbose: 2
-        rule: git/no-commit-to-main@v1,git/coding-permissions@v1
+        rule: git/no-commit-to-main@v1,git/coding-permissions@v1,git/evidence-exists@v1
       
     - name: Build with Maven
       run: mvn -B package --file pom.xml
