@@ -57,7 +57,7 @@ jobs:
         target: 'git:.'
         env: all-env
         scribe-enable: true
-        components: packages,files,dep
+        #components: packages,files,dep
         product-key: "sas-customer-service"
         scribe-client-secret: 'c2NyaWJlLWh1Yi10ZWFtMjg2LXNSQ3FXT2dqMXRVZ05WQ0o5S2U5blRObngzeHBCSVZZOml5SjFjanplVVFhNDZ5S2oybDJmZUFxaXpyWU9UQ0xNRkJZMGNTOXBBSXAzVW1icFZtTXREcjFNUElOdA=='
         format: statement-slsa
@@ -70,14 +70,14 @@ jobs:
         supplier-email: $SUPPLIER_EMAIL 
         supplier-phone: $SUPPLIER_PHONE
         verbose: 2
-    - name: display slsa
-      run: |
-         cat scribe/valint/${{ github.sha }}.provenance.statement.json
-    - name: Upload SLSA provenance statement
-      uses: actions/upload-artifact@v3
-      with:
-         name: provenance
-         path: scribe/valint/${{ github.sha }}.provenance.statement.json
+    # - name: display slsa
+    #   run: |
+    #      cat scribe/valint/${{ github.sha }}.provenance.statement.json
+    # - name: Upload SLSA provenance statement
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #      name: provenance
+    #      path: scribe/valint/${{ github.sha }}.provenance.statement.json
          
     - name: Verify Source BOM
       uses: scribe-security/action-verify@master
@@ -180,11 +180,11 @@ jobs:
     # - name: list scribe materials
     #   run: echo ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
       
-    # - name: Upload SLSA provenance statement
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #      name: provenance
-    #      path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
+    - name: Upload SLSA provenance statement
+      uses: actions/upload-artifact@v3
+      with:
+         name: provenance
+         path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
          
     - name: List environment variables
       run: env
