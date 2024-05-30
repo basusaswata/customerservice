@@ -72,7 +72,7 @@ jobs:
     - name: Upload verification evidence 
       uses: actions/upload-artifact@v3
       with:
-         name: Source BOM
+         name: Source BOM verification report
          path: /home/runner/.cache/valint/sha1-${{ github.sha }}.sarif.json
          
     # - name: Generate Source BOM
@@ -131,7 +131,7 @@ jobs:
     - name: Upload SCA result results
       uses: actions/upload-artifact@master
       with:
-           name: Depcheck report
+           name: Source composition analysis report
            path: ${{github.workspace}}/reports   
            
     - name: Secret Scanner
