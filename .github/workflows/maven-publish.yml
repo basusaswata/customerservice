@@ -49,6 +49,7 @@ jobs:
       run: |
         valint slsa git:. -o statement
         valint verify git:. -i statement --rule git/no-commit-to-main@v1
+        ls
 
     - name: Generate Source BOM
       uses: scribe-security/action-bom@master
