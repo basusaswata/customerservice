@@ -105,7 +105,7 @@ jobs:
        
     - name: Verify other policies -valint cmd
       run: |
-        valint verify docker:${{ github.repository }} -i attest --slsa/verify-builder@v1,slsa/artifact-signed@v1,sbom/complete-licenses@v1 --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt
+        valint verify docker:${{ github.repository }} -i attest --rule slsa/verify-builder@v1,slsa/artifact-signed@v1,sbom/complete-licenses@v1 --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt
         ls       
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
