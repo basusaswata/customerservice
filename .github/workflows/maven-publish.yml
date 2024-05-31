@@ -137,9 +137,15 @@ jobs:
     - name: Generate SLSA evidence for SCA
       run: |
         ls ${{github.workspace}}/reports 
-        valint evidence ${{github.workspace}}/reports/dependency-check-report.html  -o statement --show
+        valint evidence ${{github.workspace}}/reports/dependency-check-report.html  -o statement 
         ls /home/runner/.cache/valint
+        cat /home/runner/.cache/valint/*.generic.json
     
+    - name: Upload zslsa evidence for SCA
+      uses: actions/upload-artifact@v3
+      with:
+         name: provenance
+         path: /home/runner/.cache/valint/*.generic.json
   
       
     # - name: list few things
