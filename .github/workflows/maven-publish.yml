@@ -133,12 +133,13 @@ jobs:
       with:
            name: Source composition analysis report
            path: ${{github.workspace}}/reports   
+           
     - name: Generate SLSA evidence for SCA
       run: |
         ls ${{github.workspace}}/reports 
-        valint evidence ${{github.workspace}}/reports/dependency-check-report.html  -o statement 
+        valint evidence ${{github.workspace}}/reports/dependency-check-report.html  -o statement --show
         ls /home/runner/.cache/valint
-        
+    
   
       
     # - name: list few things
