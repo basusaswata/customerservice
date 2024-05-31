@@ -98,6 +98,13 @@ jobs:
         valint bom docker:${{ github.repository }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
         valint slsa docker:${{ github.repository }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
         ls /home/runner/.cache/valint
+
+
+    - name: Upload SLSA provenance statement
+      uses: actions/upload-artifact@v3
+      with:
+         name: provenance
+         path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
     
     - name: Verify attestaiton signature -valint cmd
       run: |
@@ -107,11 +114,7 @@ jobs:
       run: |
         valint verify docker:${{ github.repository }} -i attest --rule slsa/artifact-signed@v1,sbom/complete-licenses@v1 --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt
         ls       
-    - name: Upload SLSA provenance statement
-      uses: actions/upload-artifact@v3
-      with:
-         name: provenance
-         path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
+    
          
     - name: verify other policies slsa
       id: valint_verify
