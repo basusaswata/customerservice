@@ -51,7 +51,6 @@ jobs:
         valint bom git:. -o statement -f 
         valint bom git:. -o attest -f 
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
-        echo "############### My API key is: ${{ secrets.DOCKPAS }}"
         ls
     - name: Verify Source BOM and attestation -valint cmd
       run: |
@@ -134,12 +133,13 @@ jobs:
       with:
            name: Source composition analysis report
            path: ${{github.workspace}}/reports   
-           
-    - name: Secret Scanner
-      uses: secret-scanner/action@0.0.2       
-      with: 
-         baseline-file: './.secrets.baseline'
-         exclude_files_path: .github/workflows/
+    - name: Generate SLSA evidence for SCA
+      run: |
+        ls ${{github.workspace}}/reports 
+        valint evidence ${{github.workspace}}/reports  -o statement -f 
+        ls /home/runner/.cache/valint
+        
+  
       
     # - name: list few things
     #   run: ls
