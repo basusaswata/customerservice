@@ -136,7 +136,7 @@ jobs:
     - name: Generate SLSA evidence for SCA
       run: |
         ls ${{github.workspace}}/reports 
-        valint evidence ${{github.workspace}}/reports  -o statement -f 
+        valint evidence ${{github.workspace}}/reports/dependency-check-report.html  -o statement 
         ls /home/runner/.cache/valint
         
   
