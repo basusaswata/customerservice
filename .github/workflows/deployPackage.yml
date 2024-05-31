@@ -97,6 +97,7 @@ jobs:
       run: |
         ls ./scribe/valint
         valint bom docker:${{ github.repository }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
+        valint slsa docker:${{ github.repository }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
         ls ./scribe/valint 
     
     - name: Verify attestaiton signature -valint cmd
