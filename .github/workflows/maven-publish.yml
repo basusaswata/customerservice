@@ -141,10 +141,10 @@ jobs:
         ls /home/runner/.cache/valint
         cat /home/runner/.cache/valint/*.generic.json
     
-    - name: Upload zslsa evidence for SCA
+    - name: Upload slsa evidence for SCA
       uses: actions/upload-artifact@v3
       with:
-         name: provenance
+         name: SCA SLSA evidence
          path: /home/runner/.cache/valint/*.generic.json
   
       
