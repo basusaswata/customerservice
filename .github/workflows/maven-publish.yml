@@ -47,7 +47,7 @@ jobs:
       
     - name: Generate Source BOM and attestation -valint cmd
       run: |
-        #valint help bom
+        valint help bom
         #valint help slsa
         valint help verify
         valint bom git:. -o statement -f 
