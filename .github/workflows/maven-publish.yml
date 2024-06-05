@@ -47,7 +47,7 @@ jobs:
     - name: Generate Source BOM and attestation -valint cmd
       run: |
         valint help bom
-        #valint help slsa
+        valint help evidence
         valint help verify
         valint bom git:. -o statement -f --components commits,files
         valint bom git:. -o attest -f  --components commits,files
@@ -145,6 +145,7 @@ jobs:
         valint evidence ${{github.workspace}}/reports/dependency-check-report.html  -o statement 
         ls /home/runner/.cache/valint
         cat /home/runner/.cache/valint/*.generic.json
+  
     
     - name: Upload slsa evidence for SCA
       uses: actions/upload-artifact@v3
