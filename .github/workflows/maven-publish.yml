@@ -56,7 +56,7 @@ jobs:
         ls
     - name: Verify Source BOM and attestation -valint cmd
       run: |
-        valint verify git:. -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --rule git/no-commit-to-main@v1
+        valint verify git:. -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1
         ls
         
     # - name: Generate Source BOM -valint cmd
