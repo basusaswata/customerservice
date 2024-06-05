@@ -141,16 +141,19 @@ jobs:
            
     - name: Generate SLSA evidence for SCA
       run: |
-        ls ${{github.workspace}}/reports 
+        #ls ${{github.workspace}}/reports 
         mkdir scaevidence
         valint evidence ${{github.workspace}}/reports/dependency-check-report.json  -o statement --parser dependencycheck --output-directory ./scaevidence --output-file ./scaevidence/depcheck.json
-        ls
-        ls scaevidence
-        ls ${{github.workspace}}
-        ls /home/runner/.cache/valint
-        cat ./scaevidence/depcheck.json
-  
-    
+        #ls
+        #ls scaevidence
+        #ls ${{github.workspace}}
+        #ls /home/runner/.cache/valint
+        #cat ./scaevidence/depcheck.json
+        
+    - name: Verify SLSA evidence for SCA
+      run: |
+        valint verify ./scaevidence/depcheck.json -i attest-generic --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule sca/scaevidencecheck@v1
+       
     - name: Upload slsa evidence for SCA
       uses: actions/upload-artifact@v3
       with:
