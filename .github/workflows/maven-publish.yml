@@ -46,6 +46,8 @@ jobs:
       
     - name: Generate Source BOM and attestation -valint cmd
       run: |
+        brew install openpolicyagent
+        ova eval
         valint help bom
         valint help evidence
         valint help verify
