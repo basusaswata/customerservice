@@ -127,7 +127,7 @@ jobs:
       with:
           project: 'customer-service'
           path: '.'
-          format: 'json'
+          format: 'JSON'
           out: 'reports' # this is the default, no need to specify unless you wish to override it
           #args: >
             #--failOnCVSS 7
