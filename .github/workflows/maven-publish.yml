@@ -50,7 +50,7 @@ jobs:
         #valint help slsa
         valint help verify
         valint bom git:. -o statement -f --components commits,files
-        #valint bom git:. -o attest -f 
+        valint bom git:. -o attest -f  --components commits,files
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         ls
     - name: Verify Source BOM and attestation -valint cmd
