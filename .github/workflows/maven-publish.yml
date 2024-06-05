@@ -144,6 +144,9 @@ jobs:
         ls ${{github.workspace}}/reports 
         mkdir scaevidence
         valint evidence ${{github.workspace}}/reports/dependency-check-report.json  -o statement --parser dependencycheck --output-directory ./scaevidence --output-file depcheck.json
+        ls
+        ls scaevidence
+        ls ${{github.workspace}}
         ls /home/runner/.cache/valint
         cat ./scaevidence/depcheck.json
   
