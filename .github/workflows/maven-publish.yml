@@ -46,9 +46,8 @@ jobs:
       
     - name: Generate Source BOM and attestation -valint cmd
       run: |
-        sudo apt update
-        sudo apt install openpolicyagent
-        opa eval
+        curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
+        ./opa run
         valint help bom
         valint help evidence
         valint help verify
