@@ -155,8 +155,10 @@ jobs:
         
     - name: Verify SLSA evidence for SCA
       run: |
-        valint verify ./scaevidence/depcheck.json -i attest-generic --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule sca/scaevidencecheck@v1
-       
+        git clone https://github.com/basusaswata/scribe_sample_policy.git  
+        ls
+        ./opa run ./scaevidence/depcheck.json ./scribe_sample_policy/v1/sca/scaevidencecheck.rego  
+        
     - name: Upload slsa evidence for SCA
       uses: actions/upload-artifact@v3
       with:
