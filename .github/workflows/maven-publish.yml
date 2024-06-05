@@ -127,7 +127,7 @@ jobs:
       with:
           project: 'customer-service'
           path: '.'
-          format: 'HTML'
+          format: 'json'
           out: 'reports' # this is the default, no need to specify unless you wish to override it
           #args: >
             #--failOnCVSS 7
@@ -142,9 +142,9 @@ jobs:
     - name: Generate SLSA evidence for SCA
       run: |
         ls ${{github.workspace}}/reports 
-        valint evidence ${{github.workspace}}/reports/dependency-check-report.html  -o statement 
+        valint evidence ${{github.workspace}}/reports/dependency-check-report.json  -o statement --parser dependencycheck --output-file depcheck.json
         ls /home/runner/.cache/valint
-        cat /home/runner/.cache/valint/*.generic.json
+        cat /home/runner/.cache/valint/depcheck.json
   
     
     - name: Upload slsa evidence for SCA
