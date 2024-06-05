@@ -143,7 +143,7 @@ jobs:
       run: |
         ls ${{github.workspace}}/reports 
         mkdir scaevidence
-        valint evidence ${{github.workspace}}/reports/dependency-check-report.json  -o statement --parser dependencycheck --output-directory ./scaevidence --output-file depcheck.json
+        valint evidence ${{github.workspace}}/reports/dependency-check-report.json  -o statement --parser dependencycheck --output-directory ./scaevidence --output-file ./scaevidence/depcheck.json
         ls
         ls scaevidence
         ls ${{github.workspace}}
