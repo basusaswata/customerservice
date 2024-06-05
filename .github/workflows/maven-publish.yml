@@ -47,16 +47,16 @@ jobs:
       
     - name: Generate Source BOM and attestation -valint cmd
       run: |
-        valint help
-        valint 
-        valint list
+        valint help bom
+        valint help slsa
+        valint help verify
         valint bom git:. -o statement -f 
         valint bom git:. -o attest -f 
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         ls
     - name: Verify Source BOM and attestation -valint cmd
       run: |
-        valint verify git:. -i attest --rule git/no-commit-to-main@v1
+        valint verify git:. -i attest --g https://github.com/basusaswata/scribe_sample_policy.git  --rule git/no-commit-to-main@v1
         ls
         
     # - name: Generate Source BOM -valint cmd
