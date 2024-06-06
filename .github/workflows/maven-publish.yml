@@ -115,7 +115,7 @@ jobs:
       run: |
         #ls ${{github.workspace}}/reports 
         mkdir scaevidence
-        valint evidence ${{github.workspace}}/reports/dependency-check-report.json -E -o statement --parser dependencycheck --output-directory ./scaevidence --output-file ./scaevidence/depcheck.json --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
+        valint evidence ${{github.workspace}}/reports/dependency-check-report.json -E -o statement --parser dependencycheck --output-directory ./scaevidence --output-file ./scaevidence/depcheck.json --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
         #ls
         #ls scaevidence
         #ls ${{github.workspace}}
@@ -146,8 +146,8 @@ jobs:
     - name: Generate signed SBOM for docker image
       run: |     
         mkdir containerbom
-        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json
-        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
+        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json
+        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
         FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
         echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerbom
