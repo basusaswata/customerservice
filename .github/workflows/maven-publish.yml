@@ -52,8 +52,11 @@ jobs:
         #valint help bom
         #valint help evidence
         #valint help verify
+        valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
         valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
+        valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
         valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
+        
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
     - name: Verify Source BOM and attestation -valint cmd
@@ -71,6 +74,12 @@ jobs:
       with:
          name: Source BOM
          path: /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.statement.json
+         
+    - name: Upload Source Provenance 
+      uses: actions/upload-artifact@v3
+      with:
+         name: Source BOM
+         path: /home/runner/.cache/valint/sha1-${{ github.sha }}.provenance.statement.json
     - name: Upload verification evidence 
       uses: actions/upload-artifact@v3
       with:
