@@ -132,47 +132,54 @@ jobs:
          docker build . -t ${{ github.repository }}
          docker login --username basu.saswata@gmail.com --password ${{ secrets.DOCKPAS }}
          docker push ${{ github.repository }}
-         
 
     - name: Generate signed SBOM for docker image
-      uses: scribe-security/action-bom@master
-      with:
-        target: 'docker:${{ github.repository }}'
-        scribe-enable: true
-        product-key: "sas-customer-service"
-        scribe-client-secret:  ${{ secrets.CLIENT_SECRET }}
-        format: attest
-        product-version: "version_prod_sprint37_01"
-        force: true
-        env: all-env
-        author-name: $AUTHOR_NAME
-        author-email: $AUTHOR_EMAIL
-        author-phone: $AUTHOR_PHONE
-        supplier-name: $SUPPLIER_NAME
-        supplier-url: $SUPPLIER_URL
-        supplier-email: $SUPPLIER_EMAIL 
-        supplier-phone: $SUPPLIER_PHONE
+      run: |     
+        valint bom 'docker:${{ github.repository }} -E -o attest -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
+       
+    # - name: Generate signed SBOM for docker image
+    #   uses: scribe-security/action-bom@master
+    #   with:
+    #     target: 'docker:${{ github.repository }}'
+    #     scribe-enable: true
+    #     product-key: "sas-customer-service"
+    #     scribe-client-secret:  ${{ secrets.CLIENT_SECRET }}
+    #     format: attest
+    #     product-version: "version_prod_sprint37_01"
+    #     force: true
+    #     env: all-env
+    #     author-name: $AUTHOR_NAME
+    #     author-email: $AUTHOR_EMAIL
+    #     author-phone: $AUTHOR_PHONE
+    #     supplier-name: $SUPPLIER_NAME
+    #     supplier-url: $SUPPLIER_URL
+    #     supplier-email: $SUPPLIER_EMAIL 
+    #     supplier-phone: $SUPPLIER_PHONE
         
-    - name: Generate SLSA provenance statement
-      id: valint_slsa_statement
-      uses: scribe-security/action-bom@master
-      with:
-         target: 'docker:${{ github.repository }}'
-         format: statement-slsa
+    # - name: Generate SLSA provenance statement
+    #   id: valint_slsa_statement
+    #   uses: scribe-security/action-bom@master
+    #   with:
+    #      target: 'docker:${{ github.repository }}'
+    #      format: statement-slsa
          
-    - name: Attest SLSA provenance statement
-      uses: scribe-security/action-bom@master
-      with:
-         target: 'docker:${{ github.repository }}'
-         format: attest-slsa    
+    # - name: Attest SLSA provenance statement
+    #   uses: scribe-security/action-bom@master
+    #   with:
+    #      target: 'docker:${{ github.repository }}'
+    #      format: attest-slsa    
          
-
+    # - name: Upload Source BOM 
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #      name: Source BOM
+    #      path: /home/runner/.cache/valint/sha256-${{ github.sha }}.provenance.statement.json
       
-    - name: Upload SLSA provenance statement
-      uses: actions/upload-artifact@v3
-      with:
-         name: provenance
-         path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
+    # - name: Upload SLSA provenance statement
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #      name: provenance
+    #      path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
          
-    - name: List environment variables
-      run: env
+    # - name: List environment variables
+    #   run: env
