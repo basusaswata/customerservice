@@ -157,7 +157,8 @@ jobs:
       run: |
         git clone https://github.com/basusaswata/scribe_sample_policy.git  
         ls
-        ./opa run ./scaevidence/depcheck.json ./scribe_sample_policy/v1/sca/scaevidencecheck.rego  
+        ./opa eval -i ./scaevidence/depcheck.json -d ./scribe_sample_policy/v1/sca/scaevidencecheck.rego 
+        #./opa run ./scaevidence/depcheck.json ./scribe_sample_policy/v1/sca/scaevidencecheck.rego  
         
     - name: Upload slsa evidence for SCA
       uses: actions/upload-artifact@v3
