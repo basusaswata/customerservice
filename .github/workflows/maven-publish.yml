@@ -48,6 +48,10 @@ jobs:
     - name: install valint
       uses: scribe-security/action-installer@master
       
+    - name: Install OPA
+      run: |
+        curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
+        chmod 755 ./opa
   
          
 
@@ -117,9 +121,6 @@ jobs:
         
     - name: Generate Source BOM and attestation -valint cmd
       run: |
-        curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
-        chmod 755 ./opa
-        ./opa run
         #valint help bom
         #valint help evidence
         #valint help verify
