@@ -15,7 +15,7 @@ env:
   SUPPLIER_EMAIL: basu.saswata@gmail.com
   SUPPLIER_PHONE: 001-001-0011
   USER_DATA: service-binding
-  PRODUCT_VERSION: 2
+  PRODUCT_VERSION: 3
   SCANNER_ARGS: |
       --exclude-files \.github/workflows/.*
       --exclude-lines ^\s+with\s+imageTag\s*=.*$ 
@@ -41,51 +41,14 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-        
-    - name: install valint
-      uses: scribe-security/action-installer@master
-      
-    - name: Generate Source BOM and attestation -valint cmd
-      run: |
-        curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
-        chmod 755 ./opa
-        ./opa run
-        #valint help bom
-        #valint help evidence
-        #valint help verify
-        valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
-        valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
-        valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
-        valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
-        
-        #valint verify git:. -i attest --rule git/no-commit-to-main@v1
-        #ls
-    - name: Verify Source BOM and attestation -valint cmd
-      run: |
-        valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
-        #ls
     - name: Secret Scanner
       uses: secret-scanner/action@0.0.2
       with:
-          detect-secret-additional-args: ${{ env.SCANNER_ARGS }}    
-
+          detect-secret-additional-args: ${{ env.SCANNER_ARGS }}        
+    - name: install valint
+      uses: scribe-security/action-installer@master
+      
   
-    - name: Upload Source BOM 
-      uses: actions/upload-artifact@v3
-      with:
-         name: Source BOM
-         path: /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.statement.json
-         
-    - name: Upload Source Provenance 
-      uses: actions/upload-artifact@v3
-      with:
-         name: Source SLSA
-         path: /home/runner/.cache/valint/sha1-${{ github.sha }}.provenance.statement.json
-    - name: Upload verification evidence 
-      uses: actions/upload-artifact@v3
-      with:
-         name: Source BOM verification report
-         path: /home/runner/.cache/valint/sha1-${{ github.sha }}.sarif.json
          
 
     - name: Build with Maven
@@ -151,37 +114,45 @@ jobs:
         FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
         echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerbom
-    # - name: Generate signed SBOM for docker image
-    #   uses: scribe-security/action-bom@master
-    #   with:
-    #     target: 'docker:${{ github.repository }}'
-    #     scribe-enable: true
-    #     product-key: "sas-customer-service"
-    #     scribe-client-secret:  ${{ secrets.CLIENT_SECRET }}
-    #     format: attest
-    #     product-version: "version_prod_sprint37_01"
-    #     force: true
-    #     env: all-env
-    #     author-name: $AUTHOR_NAME
-    #     author-email: $AUTHOR_EMAIL
-    #     author-phone: $AUTHOR_PHONE
-    #     supplier-name: $SUPPLIER_NAME
-    #     supplier-url: $SUPPLIER_URL
-    #     supplier-email: $SUPPLIER_EMAIL 
-    #     supplier-phone: $SUPPLIER_PHONE
         
-    # - name: Generate SLSA provenance statement
-    #   id: valint_slsa_statement
-    #   uses: scribe-security/action-bom@master
-    #   with:
-    #      target: 'docker:${{ github.repository }}'
-    #      format: statement-slsa
+    - name: Generate Source BOM and attestation -valint cmd
+      run: |
+        curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
+        chmod 755 ./opa
+        ./opa run
+        #valint help bom
+        #valint help evidence
+        #valint help verify
+        valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
+        valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
+        valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
+        
+        #valint verify git:. -i attest --rule git/no-commit-to-main@v1
+        #ls
+    - name: Verify Source BOM and attestation -valint cmd
+      run: |
+        valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        #ls
+
+
+  
+    - name: Upload Source BOM 
+      uses: actions/upload-artifact@v3
+      with:
+         name: Source BOM
+         path: /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.statement.json
          
-    # - name: Attest SLSA provenance statement
-    #   uses: scribe-security/action-bom@master
-    #   with:
-    #      target: 'docker:${{ github.repository }}'
-    #      format: attest-slsa    
+    - name: Upload Source Provenance 
+      uses: actions/upload-artifact@v3
+      with:
+         name: Source SLSA
+         path: /home/runner/.cache/valint/sha1-${{ github.sha }}.provenance.statement.json
+    - name: Upload verification evidence 
+      uses: actions/upload-artifact@v3
+      with:
+         name: Source BOM verification report
+         path: /home/runner/.cache/valint/sha1-${{ github.sha }}.sarif.json
          
     - name: Upload Container BOM 
       uses: actions/upload-artifact@v3
