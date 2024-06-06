@@ -176,7 +176,7 @@ jobs:
     - name: Upload Container BOM 
       uses: actions/upload-artifact@v3
       with:
-         name: Source BOM
+         name: Container BOM
          path: ${{ env.FILE_PATH }}
       
     # - name: Upload SLSA provenance statement
