@@ -56,7 +56,7 @@ jobs:
         valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
         valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
         valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
-        valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}"
+        valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
         
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
