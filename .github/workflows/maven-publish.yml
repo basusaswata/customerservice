@@ -49,28 +49,22 @@ jobs:
         curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
         chmod 755 ./opa
         ./opa run
-        valint help bom
-        valint help evidence
-        valint help verify
+        #valint help bom
+        #valint help evidence
+        #valint help verify
         valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
         valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
-        ls
+        #ls
     - name: Verify Source BOM and attestation -valint cmd
       run: |
         valint verify git:. -i attest --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1
-        ls
+        #ls
     - name: Secret Scanner
       uses: secret-scanner/action@0.0.2
       with:
           detect-secret-additional-args: ${{ env.SCANNER_ARGS }}    
-          
-    # - name: Generate Source BOM -valint cmd
-    #   run: |
-    #     ls /home/runner/.cache/valint
-    #     echo ${{ github.sha }}
-    #     cat /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.statement.json
-    #     cat /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.sig.json
+
   
     - name: Upload Source BOM 
       uses: actions/upload-artifact@v3
@@ -131,12 +125,6 @@ jobs:
          name: SCA SLSA evidence
          path: ./scaevidence/depcheck.json
   
-      
-    # - name: list few things
-    #   run: ls
-      
-    # - name: current directory
-    #   run: pwd
 
           
     - name: Build and push Docker image
@@ -178,23 +166,7 @@ jobs:
          target: 'docker:${{ github.repository }}'
          format: attest-slsa    
          
-      
-    # - name: List environment variables
-    #   run: env
-   
-    # - name: list scribe materials
-    #   run: ls ./scribe/valint 
-      
-    # - name: list scribe materials
-    #   run: FILE_PATH=$(find . -name "*provenance.sig*")
-      
-    # - name: export to env
-    #   run: echo "MY_VAR=$FILE_PATH" >> $GITHUB_ENV
-     
-    # - name: list scribe materials
-    #   run: ls .
-    # - name: list scribe materials
-    #   run: echo ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
+
       
     - name: Upload SLSA provenance statement
       uses: actions/upload-artifact@v3
