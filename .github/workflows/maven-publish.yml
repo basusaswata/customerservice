@@ -78,7 +78,7 @@ jobs:
     - name: Upload Source Provenance 
       uses: actions/upload-artifact@v3
       with:
-         name: Source BOM
+         name: Source SLSA
          path: /home/runner/.cache/valint/sha1-${{ github.sha }}.provenance.statement.json
     - name: Upload verification evidence 
       uses: actions/upload-artifact@v3
