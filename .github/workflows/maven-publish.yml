@@ -53,7 +53,7 @@ jobs:
         valint help evidence
         valint help verify
         valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
-        valint bom git:. -o attest -f  --components commits,files
+        valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         ls
     - name: Verify Source BOM and attestation -valint cmd
@@ -83,42 +83,7 @@ jobs:
          name: Source BOM verification report
          path: /home/runner/.cache/valint/sha1-${{ github.sha }}.sarif.json
          
-    # - name: Generate Source BOM
-    #   uses: scribe-security/action-bom@master
-    #   with:
-    #     target: 'git:.'
-    #     env: all-env
-    #     scribe-enable: true
-    #     #components: packages,files,dep
-    #     product-key: "sas-customer-service"
-    #     scribe-client-secret: ${{ secrets.CLIENT_SECRET }}
-    #     format: statement-slsa
-    #     product-version: "version_prod_sprint37_01"
-    #     author-name: $AUTHOR_NAME
-    #     author-email: $AUTHOR_EMAIL
-    #     author-phone: $AUTHOR_PHONE
-    #     supplier-name: $SUPPLIER_NAME
-    #     supplier-url: $SUPPLIER_URL
-    #     supplier-email: $SUPPLIER_EMAIL 
-    #     supplier-phone: $SUPPLIER_PHONE
-    #     verbose: 2
-    # - name: display slsa
-    #   run: |
-    #      cat scribe/valint/${{ github.sha }}.provenance.statement.json
-    # - name: Upload Source SLSA statement
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #      name: Source SLSA
-    #      path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
-         
-    # - name: Verify Source BOM
-    #   uses: scribe-security/action-verify@master
-    #   with:
-    #     target: 'git:.'
-    #     #input-format: statement
-    #     verbose: 2
-    #     #rule: git/no-commit-to-main@v1,git/coding-permissions@v1,git/evidence-exists@v1
-      
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
       
@@ -146,7 +111,7 @@ jobs:
       run: |
         #ls ${{github.workspace}}/reports 
         mkdir scaevidence
-        valint evidence ${{github.workspace}}/reports/dependency-check-report.json  -o statement --parser dependencycheck --output-directory ./scaevidence --output-file ./scaevidence/depcheck.json
+        valint evidence ${{github.workspace}}/reports/dependency-check-report.json -E -o statement --parser dependencycheck --output-directory ./scaevidence --output-file ./scaevidence/depcheck.json --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
         #ls
         #ls scaevidence
         #ls ${{github.workspace}}
