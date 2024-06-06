@@ -52,13 +52,13 @@ jobs:
         #valint help bom
         #valint help evidence
         #valint help verify
-        valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
-        valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
+        valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
+        valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
     - name: Verify Source BOM and attestation -valint cmd
       run: |
-        valint verify git:. -i attest --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1
+        valint verify git:. -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1
         #ls
     - name: Secret Scanner
       uses: secret-scanner/action@0.0.2
@@ -136,8 +136,8 @@ jobs:
     - name: Generate signed SBOM for docker image
       run: |     
         mkdir containerbom
-        valint bom docker:${{ github.repository }} -E -o attest -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json
-        valint bom docker:${{ github.repository }} -E -o statement -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
+        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json
+        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
         FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
         echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerbom
