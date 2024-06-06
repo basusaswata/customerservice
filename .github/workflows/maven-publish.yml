@@ -137,7 +137,7 @@ jobs:
       run: |     
         valint bom docker:${{ github.repository }} -E -o attest -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" 
         valint bom docker:${{ github.repository }} -E -o statement -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01"
-      
+        ls /home/runner/.cache/valint
     # - name: Generate signed SBOM for docker image
     #   uses: scribe-security/action-bom@master
     #   with:
