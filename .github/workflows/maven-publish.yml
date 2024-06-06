@@ -138,7 +138,9 @@ jobs:
         mkdir containerbom
         valint bom docker:${{ github.repository }} -E -o attest -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json
         valint bom docker:${{ github.repository }} -E -o statement -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version "version_prod_sprint37_01" --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
-        ls /home/runner/.cache/valint
+        FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
+        echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
+        ls ./containerbom
     # - name: Generate signed SBOM for docker image
     #   uses: scribe-security/action-bom@master
     #   with:
@@ -175,7 +177,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
          name: Source BOM
-         path: /home/runner/.cache/valint/sha256-*.bom-statement.json
+         path: ${{ env.FILE_PATH }}
       
     # - name: Upload SLSA provenance statement
     #   uses: actions/upload-artifact@v3
