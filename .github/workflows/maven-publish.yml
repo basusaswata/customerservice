@@ -15,7 +15,7 @@ env:
   SUPPLIER_EMAIL: basu.saswata@gmail.com
   SUPPLIER_PHONE: 001-001-0011
   USER_DATA: service-binding
-  PRODUCT_VERSION: 1
+  PRODUCT_VERSION: 2
   SCANNER_ARGS: |
       --exclude-files \.github/workflows/.*
       --exclude-lines ^\s+with\s+imageTag\s*=.*$ 
