@@ -13,6 +13,7 @@ env:
   SUPPLIER_EMAIL: basu.saswata@gmail.com
   SUPPLIER_PHONE: 001-001-0011
   USER_DATA: service-binding
+  PRODUCT_VERSION: 3
 jobs:
   build:
 
@@ -48,7 +49,11 @@ jobs:
 
     - name: install valint
       uses: scribe-security/action-installer@master
-      
+    - name: Verify Source BOM and attestation -valint cmd
+      run: |
+        valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        #ls
+   
     # - name: Generate signed SBOM for docker image
     #   uses: scribe-security/action-bom@master
     #   with:
