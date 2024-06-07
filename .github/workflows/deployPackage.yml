@@ -119,17 +119,18 @@ jobs:
        
     - name: Verify other policies -valint cmd
       run: |
-        valint verify docker:${{ github.repository }} -i attest --rule slsa/artifact-signed@v1,sbom/complete-licenses@v1 --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt
+        valint verify docker:${{ github.repository }} -i attest --rule slsa/artifact-signed@v1,sbom/complete-licenses@v1 --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        #--attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt
         ls       
     
          
-    - name: verify other policies slsa
-      id: valint_verify
-      uses: scribe-security/action-verify@master
-      with:
-         target: 'docker:${{ github.repository }}'
-         input-format: attest-slsa
-         verbose: 2
-         rule: slsa/verify-builder@v1,slsa/artifact-signed@v1,sbom/complete-licenses@v1
+    # - name: verify other policies slsa
+    #   id: valint_verify
+    #   uses: scribe-security/action-verify@master
+    #   with:
+    #      target: 'docker:${{ github.repository }}'
+    #      input-format: attest-slsa
+    #      verbose: 2
+    #      rule: slsa/verify-builder@v1,slsa/artifact-signed@v1,sbom/complete-licenses@v1
   
    
