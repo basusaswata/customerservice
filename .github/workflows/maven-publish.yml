@@ -41,10 +41,7 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-    - name: Secret Scanner
-      uses: secret-scanner/action@0.0.2
-      with:
-          detect-secret-additional-args: ${{ env.SCANNER_ARGS }}        
+       
     - name: install valint
       uses: scribe-security/action-installer@master
       
@@ -53,11 +50,11 @@ jobs:
         curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
         chmod 755 ./opa
   
-         
+    - name: Secret Scanner
+      uses: secret-scanner/action@0.0.2
+      with:
+          detect-secret-additional-args: ${{ env.SCANNER_ARGS }}   
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-      
     - name: Software composition analysis
       uses: dependency-check/Dependency-Check_Action@main
       env:
@@ -71,7 +68,11 @@ jobs:
           #args: >
             #--failOnCVSS 7
             #--enableRetired
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
       
+    
     - name: Upload SCA result results
       uses: actions/upload-artifact@master
       with:
@@ -94,7 +95,7 @@ jobs:
         git clone https://github.com/basusaswata/scribe_sample_policy.git  
         ls
         ./opa eval -i ./scaevidence/depcheck.json -d ./scribe_sample_policy/v1/sca/scaevidencecheck.rego 'data.verify.deny'
-        #./opa run ./scaevidence/depcheck.json ./scribe_sample_policy/v1/sca/scaevidencecheck.rego  
+     
         
     - name: Upload slsa evidence for SCA
       uses: actions/upload-artifact@v3
@@ -110,13 +111,22 @@ jobs:
          docker login --username basu.saswata@gmail.com --password ${{ secrets.DOCKPAS }}
          docker push ${{ github.repository }}
 
-    - name: Generate signed SBOM for docker image
+    - name: Generate signed Provenance for docker image
+      run: |     
+        mkdir containerprov
+        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerbom/${{ github.repository }}.provenance.sig.json
+        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerbom/${{ github.repository }}.provenance.statement.json
+        FILE_PATH=$(find ./containerprov -type f -name '*statement*' | head -n 1)
+        echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
+        ls ./containerprov
+        
+    - name: Generate signed BOM for docker image
       run: |     
         mkdir containerbom
-        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json
-        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
+        valint bom docker:${{ github.repository }} -E -o attest -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json
+        valint bom docker:${{ github.repository }} -E -o statement -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
         FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
-        echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
+        echo "CONT_BOM_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerbom
         
     - name: Generate Source BOM and attestation -valint cmd
@@ -147,9 +157,9 @@ jobs:
     - name: Upload Source Provenance 
       uses: actions/upload-artifact@v3
       with:
-         name: Source SLSA
+         name: Source Provenance
          path: /home/runner/.cache/valint/sha1-${{ github.sha }}.provenance.statement.json
-    - name: Upload verification evidence 
+    - name: Upload Source verification evidence 
       uses: actions/upload-artifact@v3
       with:
          name: Source BOM verification report
@@ -159,8 +169,16 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
          name: Container BOM
-         path: ${{ env.FILE_PATH }}
-      
+         path: ${{ env.CONT_BOM_FILE_PATH }}
+         
+    - name: Upload Container PROVENANCE 
+      uses: actions/upload-artifact@v3
+      with:
+         name: Container PROVENANCE
+         path: ${{ env.CONT_PROV_FILE_PATH }}      
+
+
+         
     # - name: Upload SLSA provenance statement
     #   uses: actions/upload-artifact@v3
     #   with:
