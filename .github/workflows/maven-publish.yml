@@ -21,7 +21,7 @@ env:
       --exclude-lines ^\s+with\s+imageTag\s*=.*$ 
 jobs:
   build:
-
+######################### INSTALLATION AND RUNNER SET-UP AND CODE CHECKOUT #############################################
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,7 +49,14 @@ jobs:
       run: |
         curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
         chmod 755 ./opa
-  
+######################### SECRET SCANNING AND SCA  #############################################
+# RUN SECRET SCANNING AND BUILD BREAK
+# RUN SCA AND BUILD BREAK
+# UPLOAD SCA TEST RESULT
+# GENERATE EVIDANCE OF SCA
+# VERIFY SCA EVIDANCE
+# UPLOAD EVIDENCE 
+#################################################################################################
     - name: Secret Scanner
       uses: secret-scanner/action@0.0.2
       with:
@@ -69,8 +76,7 @@ jobs:
             #--failOnCVSS 7
             #--enableRetired
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+  
       
     
     - name: Upload SCA result results
@@ -102,15 +108,23 @@ jobs:
       with:
          name: SCA SLSA evidence
          path: ./scaevidence/depcheck.json
-  
-
+         
+######################### BUILD  ################################################################
+# MAVEN BUILD
+# DOCKER BUILD 
+################################################################################################# 
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
           
     - name: Build and push Docker image
       run: | 
          docker build . -t ${{ github.repository }}
          docker login --username basu.saswata@gmail.com --password ${{ secrets.DOCKPAS }}
          docker push ${{ github.repository }}
-
+         
+######################### CONTAINER PROVENANCE ###################################################
+# GENERATE PROVENANCE STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
+#################################################################################################
     - name: Generate signed Provenance for docker image
       run: |     
         mkdir containerprov
@@ -119,7 +133,9 @@ jobs:
         FILE_PATH=$(find ./containerprov -type f -name '*statement*' | head -n 1)
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
-        
+######################### CONTAINER BOM #########################################################
+# GENERATE BOM STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
+#################################################################################################        
     - name: Generate signed BOM for docker image
       run: |     
         mkdir containerbom
@@ -128,7 +144,10 @@ jobs:
         FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
         echo "CONT_BOM_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerbom
-        
+
+######################### SOURCE BOM ############################################################
+# GENERATE SOURCE BOM, PROVANANCE STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
+#################################################################################################    
     - name: Generate Source BOM and attestation -valint cmd
       run: |
         #valint help bom
@@ -141,12 +160,21 @@ jobs:
         
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
+######################### VERIFY SOURCE BOM ############################################################
+# 
+########################################################################################################  
     - name: Verify Source BOM and attestation -valint cmd
       run: |
         valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
         #ls
 
-
+######################### UPLOAD ALL BOM AND PROVENANCE STATEMENT ############################################################
+# UPLOAD SOURCE BOM
+# UPLOAD SOURCE PROVENANCE
+# UPLOAD SOURCE BOM VERIFICATION REPORT
+# UPLOAD CONTAINER BOM
+# UPLOAD CONTAINER PROVENANCE
+########################################################################################################  
   
     - name: Upload Source BOM 
       uses: actions/upload-artifact@v3
