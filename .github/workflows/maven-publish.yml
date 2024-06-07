@@ -114,8 +114,8 @@ jobs:
     - name: Generate signed Provenance for docker image
       run: |     
         mkdir containerprov
-        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerbom/${{ github.repository }}.provenance.sig.json
-        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerbom/${{ github.repository }}.provenance.statement.json
+        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.sig.json
+        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.statement.json
         FILE_PATH=$(find ./containerprov -type f -name '*statement*' | head -n 1)
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
