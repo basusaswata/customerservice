@@ -62,8 +62,8 @@ jobs:
         
         cat branch_protection.json
 
-        message = $(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.message')
-        echo $message;
+        guluram = $(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.allow')
+        echo $guluram;
         
 ######################### SECRET SCANNING AND SCA  #############################################
 # RUN SECRET SCANNING AND BUILD BREAK
