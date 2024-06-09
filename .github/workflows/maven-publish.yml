@@ -186,9 +186,9 @@ jobs:
         cat branch_protection.json
        ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.message" > kuddu.json
        ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.allow" > message.json
-       echo "----------"
-       cat kuddu.json
-       cat message.json
+       # echo "----------"
+       # cat kuddu.json
+       # cat message.json
        json=$(cat message.json)
 
        # Extract the value of the "value" field using jq
