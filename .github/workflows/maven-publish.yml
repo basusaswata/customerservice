@@ -63,6 +63,7 @@ jobs:
         cat branch_protection.json
 
        ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.allow" > message.json
+       echo "----------"
        cat message.json
         
 ######################### SECRET SCANNING AND SCA  #############################################
