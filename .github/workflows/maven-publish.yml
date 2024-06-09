@@ -186,7 +186,7 @@ jobs:
          \--policy-args Owner=basusaswata 
          --policy-args Repo=customerservice 
          \--policy-args Branch=main 
-         \--policy-args Token=$GITH_TOKEN
+         \--policy-args Token=${{ secrets.GITH_TOKEN }}
 ######################### UPLOAD ALL BOM AND PROVENANCE STATEMENT ######################################
 # UPLOAD SOURCE BOM
 # UPLOAD SOURCE PROVENANCE
