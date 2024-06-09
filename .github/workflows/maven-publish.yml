@@ -180,7 +180,12 @@ jobs:
                         -H "Accept: application/vnd.github.v3+json" \
                         https://api.github.com/repos/${{ github.repository }}/branches/main/protection)
         echo "$response" > branch_protection.json
+        
         cat branch_protection.json
+
+       ./opa eval -i ./branch_protection.json
+          \ -d ./scribe_sample_policy/v1/sca/requre-two-approver.rego 'data.verify.allow'
+        
         if echo "$response" | jq -e '.message == "Branch not protected"' > /dev/null; then
           echo "Branch is not protected"
           exit 1;
