@@ -182,6 +182,7 @@ jobs:
         echo "$response" > branch_protection.json
         if echo "$response" | jq -e '.message == "Branch not protected"' > /dev/null; then
           echo "Branch is not protected"
+          exit 1;
         else
           echo "Branch is protected"
         fi
