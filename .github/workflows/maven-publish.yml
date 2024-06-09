@@ -47,6 +47,7 @@ jobs:
       
     - name: Install OPA
       run: |
+        git clone https://github.com/basusaswata/scribe_sample_policy.git  
         curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
         chmod 755 ./opa
 ######################### VERIFY SOURCE BOM ############################################################
@@ -112,7 +113,6 @@ jobs:
         
     - name: Verify SLSA evidence for SCA
       run: |
-        git clone https://github.com/basusaswata/scribe_sample_policy.git  
         ls
         ./opa eval -i ./scaevidence/depcheck.json -d ./scribe_sample_policy/v1/sca/scaevidencecheck.rego 'data.verify.deny'
      
