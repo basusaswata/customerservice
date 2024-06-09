@@ -49,6 +49,28 @@ jobs:
       run: |
         curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
         chmod 755 ./opa
+######################### VERIFY SOURCE BOM ############################################################
+# PROPER BRANCH PROTECTION
+########################################################################################################  
+    - name: Verify Source BOM Branch protection
+      run: |
+       response=$(curl -s -H "Authorization: token ${{ secrets.GITH_TOKEN }}" \
+                        -H "Accept: application/vnd.github.v3+json" \
+                        https://api.github.com/repos/${{ github.repository }}/branches/main/protection)
+        echo "$response" > branch_protection.json
+        
+        cat branch_protection.json
+
+        ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.message' -f raw
+        message=$(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.allow' -f raw); \
+        echo $message; \
+        if [[ $message == "Required approving review count is not 2." ]]; then \
+          exit 1; \
+        fi 
+       echo $message; 
+        if [[ $message == "Required approving review count is not 2." ]]; then \
+          exit 1; 
+        fi
 ######################### SECRET SCANNING AND SCA  #############################################
 # RUN SECRET SCANNING AND BUILD BREAK
 # RUN SCA AND BUILD BREAK
@@ -183,8 +205,8 @@ jobs:
         
         cat branch_protection.json
 
-       #message=$(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.message -f raw')
-        message=$(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.allow" -f raw); \
+        ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.message' -f raw
+        message=$(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.allow' -f raw); \
         echo $message; \
         if [[ $message == "Required approving review count is not 2." ]]; then \
           exit 1; \
