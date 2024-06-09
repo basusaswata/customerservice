@@ -183,13 +183,11 @@ jobs:
         
         cat branch_protection.json
 
-       ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.allow'
+       ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.message -f raw'
         
-        if echo "$response" | jq -e '.message == "Branch not protected"' > /dev/null; then
-          echo "Branch is not protected"
-          exit 1;
-        else
-          echo "Branch is protected"
+       echo $message; 
+        if [[ $message == "Required approving review count is not 2." ]]; then \
+          exit 1; 
         fi
 ######################### UPLOAD ALL BOM AND PROVENANCE STATEMENT ######################################
 # UPLOAD SOURCE BOM
