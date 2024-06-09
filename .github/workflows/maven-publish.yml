@@ -184,7 +184,7 @@ jobs:
         cat branch_protection.json
 
        #message=$(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.message -f raw')
-        message=$(./opa eval -i ./branch_protection.json --d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.allow" -f raw); \
+        message=$(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.allow" -f raw); \
         echo $message; \
         if [[ $message == "Required approving review count is not 2." ]]; then \
           exit 1; \
