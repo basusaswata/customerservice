@@ -62,7 +62,7 @@ jobs:
         
         cat branch_protection.json
 
-        message= $(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.message')
+        message = $(./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.message')
         echo $message;
         
 ######################### SECRET SCANNING AND SCA  #############################################
