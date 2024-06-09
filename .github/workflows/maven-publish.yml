@@ -72,6 +72,11 @@ jobs:
       
        # Output the value
        echo "The value field is: $value"
+         if [ "$value" = "false" ]; then
+          echo "The value is false, exiting."
+          exit 1
+        fi
+
         
 ######################### SECRET SCANNING AND SCA  #############################################
 # RUN SECRET SCANNING AND BUILD BREAK
