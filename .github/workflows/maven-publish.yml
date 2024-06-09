@@ -183,8 +183,7 @@ jobs:
         
         cat branch_protection.json
 
-       ./opa eval -i ./branch_protection.json
-          \ -d ./scribe_sample_policy/v1/sca/requre-two-approver.rego 'data.verify.allow'
+       ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego 'data.verify.allow'
         
         if echo "$response" | jq -e '.message == "Branch not protected"' > /dev/null; then
           echo "Branch is not protected"
