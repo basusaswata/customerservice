@@ -65,6 +65,13 @@ jobs:
        ./opa eval -i ./branch_protection.json -d ./scribe_sample_policy/v1/git/requre-two-approver.rego "data.verify.allow" > message.json
        echo "----------"
        cat message.json
+       json=$(cat message.json)
+
+       # Extract the value of the "value" field using jq
+       value=$(echo "$json" | jq -r '.result[0].expressions[0].value')
+      
+       # Output the value
+       echo "The value field is: $value"
         
 ######################### SECRET SCANNING AND SCA  #############################################
 # RUN SECRET SCANNING AND BUILD BREAK
