@@ -146,29 +146,48 @@ jobs:
         ls ./containerbom
 
 ######################### SOURCE BOM ############################################################
-# GENERATE SOURCE BOM, PROVANANCE STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
+# GENERATE SOURCE BOM, PROVANANCE STATEMENT, SOURCE BOM ATTESTATION AND PROVENANCE ATTESTATION  
 #################################################################################################    
     - name: Generate Source BOM and attestation -valint cmd
       run: |
         #valint help bom
         #valint help evidence
         #valint help verify
+        # SOURCE BOM
         valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        # PROVENANCE STATEMENT
         valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
+        # BOM ATTESTAITON SIGNATURE
         valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
+        # PROVENANCE ATTESTATION SIGNATURE
         valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
         
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
 ######################### VERIFY SOURCE BOM ############################################################
-# 
+# NO COMMITE TO MAIN
 ########################################################################################################  
     - name: Verify Source BOM and attestation -valint cmd
       run: |
         valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
         #ls
-
-######################### UPLOAD ALL BOM AND PROVENANCE STATEMENT ############################################################
+######################### VERIFY SOURCE BOM ############################################################
+# PROPER BRANCH PROTECTION
+########################################################################################################  
+    - name: Verify Source BOM Branch protection
+      run: |
+         valint verify -E -i attes-slsa
+         \--product-key sas-customer-service 
+         \--scribe.client-secret  ${{ secrets.CLIENT_SECRET }} 
+         \--product-version ${{env.PRODUCT_VERSION}}
+         \--git-branch main
+         \ --bundle https://github.com/basusaswata/scribe_sample_policy.git
+         \--rule api/gith-branch-protection@v1 
+         \--policy-args Owner=basusaswata 
+         --policy-args Repo=customerservice 
+         \--policy-args Branch=main 
+         \--policy-args Token=$GITH_TOKEN
+######################### UPLOAD ALL BOM AND PROVENANCE STATEMENT ######################################
 # UPLOAD SOURCE BOM
 # UPLOAD SOURCE PROVENANCE
 # UPLOAD SOURCE BOM VERIFICATION REPORT
