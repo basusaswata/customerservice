@@ -55,30 +55,7 @@ jobs:
     - name: Get the latest commit SHA
       id: get_commit_sha
       run: echo "::set-output name=commit_sha::$(git rev-parse HEAD)"
-######################### VERIFY SOURCE BOM ############################################################
-# NO DIRECT COMMITE TO MAIN
-########################################################################################################  
-    - name: Verify No direct commit to main
-      run: | 
-        pr_url=$(curl -s -H "Authorization: token ${{ secrets.GITH_TOKEN }}" -H "Accept: application/vnd.github.v3+json"  "https://api.github.com/search/issues?q=${{ steps.get_commit_sha.outputs.commit_sha }}+repo:${{ github.repository }}+is:pr" | jq -r '.items[0].pull_request.url') 
-        echo $pr_url
-        echo ${{ steps.get_commit_sha.outputs.commit_sha }}
-         if [ "$pr_url" != "null" ]; then
-          pr_commit=$(curl -s \
-            -H "Authorization: token ${{ secrets.GITH_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "$pr_url/commits")
-          echo $pr_commit
-          if [ -n "$pr_commit" ]; then
-            echo "The commit was made through a pull request."
-          else
-            echo "The commit was made directly to the main branch. 1"
-            exit 1
-          fi
-        else
-          echo "The commit was made directly to the main branch. 2"
-          exit 1
-        fi
+
 ######################### SECRET SCANNING AND SCA  #############################################
 # RUN SECRET SCANNING AND BUILD BREAK
 # RUN SCA AND BUILD BREAK
@@ -200,7 +177,31 @@ jobs:
       run: |
         valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
         #ls
-######################### VERIFY SOURCE BOM ############################################################
+######################### VERIFY SOURCE BOM - NO DIRECT COMMITE TO MAIN #################################
+# NO DIRECT COMMITE TO MAIN
+########################################################################################################  
+    - name: Verify No direct commit to main
+      run: | 
+        pr_url=$(curl -s -H "Authorization: token ${{ secrets.GITH_TOKEN }}" -H "Accept: application/vnd.github.v3+json"  "https://api.github.com/search/issues?q=${{ steps.get_commit_sha.outputs.commit_sha }}+repo:${{ github.repository }}+is:pr" | jq -r '.items[0].pull_request.url') 
+        echo $pr_url
+        echo ${{ steps.get_commit_sha.outputs.commit_sha }}
+         if [ "$pr_url" != "null" ]; then
+          pr_commit=$(curl -s \
+            -H "Authorization: token ${{ secrets.GITH_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "$pr_url/commits")
+          echo $pr_commit
+          if [ -n "$pr_commit" ]; then
+            echo "The commit was made through a pull request."
+          else
+            echo "The commit was made directly to the main branch. 1"
+            exit 1
+          fi
+        else
+          echo "The commit was made directly to the main branch. 2"
+          exit 1
+        fi
+######################### VERIFY SOURCE BOM - REQUIRE 2 APPROVER #######################################
 # PROPER BRANCH PROTECTION
 ########################################################################################################  
     - name: Verify Source BOM Branch protection
