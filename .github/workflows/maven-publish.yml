@@ -169,15 +169,16 @@ jobs:
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
 
-    - name: Verify SLSA evidence for SCA
-      run: |
-        ls
-        ./opa eval -i ./scaevidence/depcheck.json -d ./scribe_sample_policy/v1/sca/scaevidencecheck.rego 'data.verify.deny'
      
 ######################### SECRET SCANNING AND SCA  #############################################
 # VERIFY SCA EVIDANCE
 # UPLOAD EVIDENCE 
 #################################################################################################       
+    - name: Verify SLSA evidence for SCA
+      run: |
+        ls
+        ./opa eval -i ./scaevidence/depcheck.json -d ./scribe_sample_policy/v1/sca/scaevidencecheck.rego 'data.verify.deny'
+
     - name: Upload slsa evidence for SCA
       uses: actions/upload-artifact@v3
       with:
