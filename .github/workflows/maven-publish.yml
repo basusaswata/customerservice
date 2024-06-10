@@ -61,8 +61,6 @@ jobs:
 # RUN SCA AND BUILD BREAK
 # UPLOAD SCA TEST RESULT
 # GENERATE EVIDANCE OF SCA
-# VERIFY SCA EVIDANCE
-# UPLOAD EVIDENCE 
 #################################################################################################
     - name: Secret Scanner
       uses: secret-scanner/action@0.0.2
@@ -170,6 +168,21 @@ jobs:
         
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
+
+    - name: Verify SLSA evidence for SCA
+      run: |
+        ls
+        ./opa eval -i ./scaevidence/depcheck.json -d ./scribe_sample_policy/v1/sca/scaevidencecheck.rego 'data.verify.deny'
+     
+######################### SECRET SCANNING AND SCA  #############################################
+# VERIFY SCA EVIDANCE
+# UPLOAD EVIDENCE 
+#################################################################################################       
+    - name: Upload slsa evidence for SCA
+      uses: actions/upload-artifact@v3
+      with:
+         name: SCA SLSA evidence
+         path: ./scaevidence/depcheck.json
 ######################### VERIFY SOURCE BOM ############################################################
 # NO COMMITE TO MAIN
 ########################################################################################################  
