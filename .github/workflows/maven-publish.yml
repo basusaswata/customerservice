@@ -72,11 +72,11 @@ jobs:
           if [ -n "$pr_commit" ]; then
             echo "The commit was made through a pull request."
           else
-            echo "The commit was made directly to the main branch."
+            echo "The commit was made directly to the main branch. 1"
             exit 1
           fi
         else
-          echo "The commit was made directly to the main branch."
+          echo "The commit was made directly to the main branch. 2"
           exit 1
         fi
 ######################### SECRET SCANNING AND SCA  #############################################
