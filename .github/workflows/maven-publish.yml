@@ -160,10 +160,13 @@ jobs:
 
 ######################### VERIFY PROVENANCE SIGNATURE SOURCE AND CONTAINER #######################
 ##################################################################################################
-    - name: Verify attestaiton signature -valint cmd
+    - name: Verify container provenance attestaiton signature
       run: |
-        valint verify docker:${{ github.repository }} input-format=attest-slsa --context-type=github --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
-        valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        valint verify docker:${{ github.repository }} input-format=attest-slsa --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+   
+    - name: Verify source provenance attestaiton signature
+      run: |
+        valint verify git:.  -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
 
      
 ######################### VERIFY SLSA SCA EVIDENCE ##############################################
