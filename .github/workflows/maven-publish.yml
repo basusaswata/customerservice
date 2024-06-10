@@ -67,7 +67,7 @@ jobs:
           pr_commit=$(curl -s \
             -H "Authorization: token ${{ secrets.GITH_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
-            "$pr_url/commits" | jq -r --arg sha "${{ steps.get_commit_sha.outputs.commit_sha }}" '.[] | select(.sha == $sha)')
+            "$pr_url/commits")
           echo $pr_commit
           if [ -n "$pr_commit" ]; then
             echo "The commit was made through a pull request."
