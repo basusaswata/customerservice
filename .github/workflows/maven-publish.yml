@@ -101,17 +101,6 @@ jobs:
         #ls /home/runner/.cache/valint
         #cat ./scaevidence/depcheck.json
         
-    - name: Verify SLSA evidence for SCA
-      run: |
-        ls
-        ./opa eval -i ./scaevidence/depcheck.json -d ./scribe_sample_policy/v1/sca/scaevidencecheck.rego 'data.verify.deny'
-     
-        
-    - name: Upload slsa evidence for SCA
-      uses: actions/upload-artifact@v3
-      with:
-         name: SCA SLSA evidence
-         path: ./scaevidence/depcheck.json
          
 ######################### BUILD  ################################################################
 # MAVEN BUILD
@@ -169,8 +158,15 @@ jobs:
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
 
+######################### VERIFY PROVENANCE SIGNATURE SOURCE AND CONTAINER #######################
+##################################################################################################
+    - name: Verify attestaiton signature -valint cmd
+      run: |
+        valint verify docker:${{ github.repository }} input-format=attest-slsa --context-type=github --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+
      
-######################### SECRET SCANNING AND SCA  #############################################
+######################### VERIFY SLSA SCA EVIDENCE ##############################################
 # VERIFY SCA EVIDANCE
 # UPLOAD EVIDENCE 
 #################################################################################################       
@@ -187,10 +183,10 @@ jobs:
 ######################### VERIFY SOURCE BOM ############################################################
 # NO COMMITE TO MAIN
 ########################################################################################################  
-    - name: Verify Source BOM and attestation -valint cmd
-      run: |
-        valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
-        #ls
+    # - name: Verify Source BOM and attestation -valint cmd
+    #   run: |
+    #     valint verify git:. -E -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main --rule git/no-commit-to-main@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+    #     #ls
 ######################### VERIFY SOURCE BOM - NO DIRECT COMMITE TO MAIN #################################
 # NO DIRECT COMMITE TO MAIN
 ########################################################################################################  
