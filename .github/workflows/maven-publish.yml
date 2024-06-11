@@ -1,5 +1,5 @@
 
-name: Build deployment artifact 
+name: Build deployment artifact  
  
 on:
    workflow_dispatch: 
