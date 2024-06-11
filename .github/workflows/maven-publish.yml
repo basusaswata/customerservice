@@ -161,8 +161,8 @@ jobs:
 ######################### VERIFY PROVENANCE SIGNATURE SOURCE AND CONTAINER #######################
 ##################################################################################################
     # - name: Verify container provenance attestaiton signature
-    #   run: |
-    #     valint verify docker:${{ github.repository }} input-format=attest-slsa --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --rule slsa/artifact-signed@v1 --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+    #    run: |
+    #      valint verify docker:${{ github.repository }} input-format=attest-slsa --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --rule slsa/artifact-signed@v1 --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
    
     - name: Verify source provenance attestaiton signature
       run: |
