@@ -162,11 +162,11 @@ jobs:
 ##################################################################################################
     - name: Verify container provenance attestaiton signature
       run: |
-        valint verify docker:${{ github.repository }} input-format=attest-slsa --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        valint verify docker:${{ github.repository }} input-format=attest-slsa --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --rule slsa/artifact-signed@v1 --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
    
     - name: Verify source provenance attestaiton signature
       run: |
-        valint verify git:.  -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        valint verify git:.  -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --rule git/artifact-signed@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
 
      
 ######################### VERIFY SLSA SCA EVIDENCE ##############################################
