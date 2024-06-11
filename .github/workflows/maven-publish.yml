@@ -1,5 +1,5 @@
 
-name: Maven Package
+name: Build deployment artifact
 
 on:
    workflow_dispatch: 
