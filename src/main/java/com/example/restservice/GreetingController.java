@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/customer")
 public class GreetingController {
-
+          String apiKey = "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";
+            String dePassword ="a";
 	private static final String template = "Hi, %s!";
 	private final AtomicLong counter = new AtomicLong();
 
