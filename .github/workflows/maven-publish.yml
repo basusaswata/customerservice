@@ -85,6 +85,7 @@ jobs:
             --project "customer-service" \
             --scan . \
             --format JSON \
+            --nvdApiKey "${{ secrets.NVD_API_KEY }}"
             --out reports    
     
     - name: Upload SCA result results
