@@ -245,30 +245,30 @@ jobs:
 ########################################################################################################  
   
     - name: Upload Source BOM 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
          name: Source BOM
          path: /home/runner/.cache/valint/sha1-${{ github.sha }}.bom.statement.json
          
     - name: Upload Source Provenance 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
          name: Source Provenance
          path: /home/runner/.cache/valint/sha1-${{ github.sha }}.provenance.statement.json
     - name: Upload Source verification evidence 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
          name: Source BOM verification report
          path: /home/runner/.cache/valint/sha1-${{ github.sha }}.sarif.json
          
     - name: Upload Container BOM 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
          name: Container BOM
          path: ${{ env.CONT_BOM_FILE_PATH }}
          
     - name: Upload Container PROVENANCE 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
          name: Container PROVENANCE
          path: ${{ env.CONT_PROV_FILE_PATH }}      
@@ -276,7 +276,7 @@ jobs:
 
          
     # - name: Upload SLSA provenance statement
-    #   uses: actions/upload-artifact@v3
+    #   uses: actions/upload-artifact@v4
     #   with:
     #      name: provenance
     #      path: ${{ steps.valint_slsa_statement.outputs.OUTPUT_PATH }}
