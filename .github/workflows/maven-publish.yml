@@ -57,7 +57,9 @@ jobs:
           curl -Ls "https://github.com/dependency-check/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
           unzip dependency-check.zip -d dependency-check
           ls
-          ls dependency-check
+          cd dependency-check
+          ls
+          cd ..
           chmod +x dependency-check/bin/dependency-check.sh
         
 ######################### GET LATEST GIT COMMIT SHA #####################################################
