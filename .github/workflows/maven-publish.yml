@@ -17,8 +17,8 @@ env:
   USER_DATA: service-binding
   PRODUCT_VERSION: 3
   SCANNER_ARGS: |
-      --exclude-files \.github/workflows/.*
-      --exclude-lines ^\s+with\s+imageTag\s*=.*$ 
+      exclude-files \.github/workflows/.*
+      exclude-lines ^\s+with\s+imageTag\s*=.*$ 
 jobs:
   build:
 ######################### INSTALLATION AND RUNNER SET-UP AND CODE CHECKOUT #############################################
