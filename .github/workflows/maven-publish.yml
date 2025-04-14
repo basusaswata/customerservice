@@ -56,8 +56,8 @@ jobs:
           echo "Latest Dependency-Check version: $VERSION"
           curl -Ls "https://github.com/dependency-check/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
           unzip dependency-check.zip -d dependency-check
-          ls
           cd dependency-check
+          pwd
           ls
           cd ..
           chmod +x dependency-check/bin/dependency-check.sh
