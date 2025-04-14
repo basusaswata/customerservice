@@ -179,7 +179,7 @@ jobs:
         ./opa eval -i ./scaevidence/depcheck.json -d ./scribe_sample_policy/v1/sca/scaevidencecheck.rego 'data.verify.deny'
 
     - name: Upload slsa evidence for SCA
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
          name: SCA SLSA evidence
          path: ./scaevidence/depcheck.json
