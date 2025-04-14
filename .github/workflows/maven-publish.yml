@@ -50,6 +50,13 @@ jobs:
         git clone https://github.com/basusaswata/scribe_sample_policy.git  
         curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
         chmod 755 ./opa
+    - name: Install OWASP Dependency Check CLI
+      run: |
+          VERSION=$(curl -s https://dependency-check.github.io/DependencyCheck/current.txt)
+          echo "Latest Dependency-Check version: $VERSION"
+          curl -Ls "https://github.com/dependency-check/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
+          unzip dependency-check.zip -d dependency-check
+          chmod +x dependency-check/bin/dependency-check.sh
         
 ######################### GET LATEST GIT COMMIT SHA #####################################################
     - name: Get the latest commit SHA
@@ -66,23 +73,13 @@ jobs:
       uses: secret-scanner/action@0.0.2
       with:
           detect-secret-additional-args: ${{ env.SCANNER_ARGS }}   
-
-    - name: Software composition analysis
-      uses: dependency-check/Dependency-Check_Action@main
-      env:
-         JAVA_HOME: /opt/jdk
-      id: Depcheck
-      with:
-          project: 'customer-service'
-          path: '.'
-          format: 'JSON'
-          out: 'reports' # this is the default, no need to specify unless you wish to override it
-          #args: >
-            #--failOnCVSS 7
-            #--enableRetired
-
-  
-      
+    - name: Run Dependency Check
+      run: |
+          ./dependency-check/bin/dependency-check.sh \
+            --project "customer-service" \
+            --scan . \
+            --format JSON \
+            --out reports    
     
     - name: Upload SCA result results
       uses: actions/upload-artifact@master
