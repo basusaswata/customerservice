@@ -86,7 +86,8 @@ jobs:
             --scan . \
             --format JSON \
             --nvdApiKey "${{ secrets.NVD_API_KEY }}"
-            --out reports    
+            --out reports  
+            --disableCentral
     
     - name: Upload SCA result results
       uses: actions/upload-artifact@master
