@@ -145,13 +145,13 @@ jobs:
         #valint help evidence
         #valint help verify
         # SOURCE BOM
-        valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} 
         # PROVENANCE STATEMENT
-        valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
-        # BOM ATTESTAITON SIGNATURE - cosign/sigstore ephemeral key
-        # valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
-        # PROVENANCE ATTESTATION SIGNATURE  - cosign/sigstore ephemeral key
-        # valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}}
+        valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} 
+        # BOM ATTESTAITON SIGNATURE 
+         valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
+        # PROVENANCE ATTESTATION SIGNATURE  
+         valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
 
         # BOM ATTESTAITON SIGNATURE - own key and certs
         valint bom docker:${{ github.repository }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
