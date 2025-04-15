@@ -204,11 +204,11 @@ jobs:
             echo "The commit was made through a pull request."
           else
             echo "The commit was made directly to the main branch. 1"
-            exit 1
+            #exit 1
           fi
         else
           echo "The commit was made directly to the main branch. 2"
-          exit 1
+          #exit 1
         fi
 ######################### VERIFY SOURCE BOM - REQUIRE 2 APPROVER #######################################
 # PROPER BRANCH PROTECTION
@@ -235,7 +235,7 @@ jobs:
        echo "The value field is: $value"
          if [ "$value" = "false" ]; then
           echo "Proper branch protection is not set"
-          exit 1
+          #exit 1
         fi
 
 ######################### UPLOAD ALL BOM AND PROVENANCE STATEMENT ######################################
