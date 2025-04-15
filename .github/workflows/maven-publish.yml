@@ -169,7 +169,7 @@ jobs:
     - name: Verify source provenance attestaiton signature
       run: |
         # valint verify git:.  -i attest-slsa --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --rule git/artifact-signed@v1 --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
-        valint verify git:. input-format=attest-slsa --context-type=github --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION} --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt 
+        valint verify git:. -i attest-slsa --context-type=github --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION} --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt 
      
 ######################### VERIFY SLSA SCA EVIDENCE ##############################################
 # VERIFY SCA EVIDANCE
