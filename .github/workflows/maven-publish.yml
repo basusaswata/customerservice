@@ -119,8 +119,8 @@ jobs:
     - name: Generate signed Provenance for docker image
       run: |     
         mkdir containerprov
-        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.sig.json
-        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.statement.json
+        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --key=./.github/workflows/certs/server.key 
+        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.statement.json 
         FILE_PATH=$(find ./containerprov -type f -name '*statement*' | head -n 1)
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
@@ -130,7 +130,7 @@ jobs:
     - name: Generate signed BOM for docker image
       run: |     
         mkdir containerbom
-        valint bom docker:${{ github.repository }} -E -o attest -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json
+        valint bom docker:${{ github.repository }} -E -o attest -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt  --key=./.github/workflows/certs/server.key 
         valint bom docker:${{ github.repository }} -E -o statement -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
         FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
         echo "CONT_BOM_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
