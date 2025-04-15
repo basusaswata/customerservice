@@ -16,6 +16,7 @@ env:
   SUPPLIER_PHONE: 001-001-0011
   USER_DATA: service-binding
   PRODUCT_VERSION: 3
+  PRODUCT_NAME: Customer-Service-1
   SCANNER_ARGS: |
       exclude-files \.github/workflows/.*
       exclude-lines ^\s+with\s+imageTag\s*=.*$ 
@@ -92,7 +93,7 @@ jobs:
       run: |
         #ls ${{github.workspace}}/reports 
         mkdir scaevidence
-        valint evidence ${{github.workspace}}/reports/dependency-check-report.json -E -o statement --parser dependencycheck --output-directory ./scaevidence --output-file ./scaevidence/depcheck.json --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+        valint evidence ${{github.workspace}}/reports/dependency-check-report.json -E -o statement --parser dependencycheck --output-directory ./scaevidence --output-file ./scaevidence/depcheck.json --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
         #ls
         #ls scaevidence
         #ls ${{github.workspace}}
@@ -119,8 +120,8 @@ jobs:
     - name: Generate signed Provenance for docker image
       run: |     
         mkdir containerprov
-        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --key=./.github/workflows/certs/server.key 
-        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.statement.json 
+        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --key=./.github/workflows/certs/server.key 
+        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.statement.json 
         FILE_PATH=$(find ./containerprov -type f -name '*statement*' | head -n 1)
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
@@ -130,8 +131,8 @@ jobs:
     - name: Generate signed BOM for docker image
       run: |     
         mkdir containerbom
-        valint bom docker:${{ github.repository }} -E -o attest -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt  --key=./.github/workflows/certs/server.key 
-        valint bom docker:${{ github.repository }} -E -o statement -f  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
+        valint bom docker:${{ github.repository }} -E -o attest -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt  --key=./.github/workflows/certs/server.key 
+        valint bom docker:${{ github.repository }} -E -o statement -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
         FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
         echo "CONT_BOM_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerbom
@@ -145,13 +146,13 @@ jobs:
         #valint help evidence
         #valint help verify
         # SOURCE BOM
-        valint bom git:. -E -o statement -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} 
+        valint bom git:. -E -o statement -f --components commits,files --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} 
         # PROVENANCE STATEMENT
-        valint bom git:. -E -o statement-slsa -f --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} 
+        valint bom git:. -E -o statement-slsa -f --components commits,files --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} 
         # BOM ATTESTAITON SIGNATURE 
-         valint bom git:. -E -o attest -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
+         valint bom git:. -E -o attest -f  --components commits,files --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
         # PROVENANCE ATTESTATION SIGNATURE  
-         valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
+         valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
 
         # BOM ATTESTAITON SIGNATURE - own key and certs
         valint bom docker:${{ github.repository }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
@@ -163,12 +164,12 @@ jobs:
 ##################################################################################################
     # - name: Verify container provenance attestaiton signature
     #    run: |
-    #      valint verify docker:${{ github.repository }} input-format=attest-slsa --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --rule slsa/artifact-signed@v1 --git-branch main  --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
+    #      valint verify docker:${{ github.repository }} input-format=attest-slsa --verbose=2 --bundle https://github.com/basusaswata/scribe_sample_policy.git  --rule slsa/artifact-signed@v1 --git-branch main  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}}
    
     - name: Verify source provenance attestaiton signature
       run: |
         # Need to fix this
-        valint verify git:. -i attest-slsa --product-key sas-customer-service --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt  
+        valint verify git:. -i attest-slsa --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/server-chain.pem  --cert=./.github/workflows/certs/server.crt  
        
 ######################### VERIFY SLSA SCA EVIDENCE ##############################################
 # VERIFY SCA EVIDANCE
