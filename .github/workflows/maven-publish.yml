@@ -56,6 +56,8 @@ jobs:
         git clone https://github.com/basusaswata/scribe_sample_policy.git  
         curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
         chmod 755 ./opa
+        pwd
+        ls
     
         
 ######################### GET LATEST GIT COMMIT SHA #####################################################
@@ -78,7 +80,7 @@ jobs:
       id: Depcheck
       with:
           project: 'customer-service'
-          path: './customerservice/customerservice'
+          path: './customerservice'
           format: 'JSON'
           out: 'reports' # this is the default, no need to specify unless you wish to override it
           #args: >
