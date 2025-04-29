@@ -78,7 +78,7 @@ jobs:
       id: Depcheck
       with:
           project: 'customer-service'
-          path: '.'
+          path: './customerservice/customerservice'
           format: 'JSON'
           out: 'reports' # this is the default, no need to specify unless you wish to override it
           #args: >
