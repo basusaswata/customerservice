@@ -2,7 +2,7 @@
 name: Build deployment artifact  
  
 on:
-   workflow_dispatch: 
+   workflow_dispatch:  
    # push:
    #    branches: ["*"]
 env:
