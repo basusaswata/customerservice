@@ -160,7 +160,8 @@ jobs:
          cosign sign --key=cosign.key $DOCKER_REPO_NAME --output-signature sig.txt
          SIGNATURE=$(cat sig.txt)
          echo "signature=$SIGNATURE" >> $GITHUB_OUTPUT
-         echo $SIGNATURE
+         echo "signature=$SIGNATURE" >> $GITHUB_ENV
+         echo $signature
          
 ######################### CONTAINER PROVENANCE ###################################################
 # GENERATE PROVENANCE STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
@@ -174,7 +175,7 @@ jobs:
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
         mkdir trivusbom 
-        trivy image --format cyclonedx --output $IMAGE_NAME.$SIGNATURE.result.sbom.cdx.json $IMAGE_NAME
+        trivy image --format cyclonedx --output $IMAGE_NAME.${{env.signature}}.result.sbom.cdx.json $IMAGE_NAME
         trivy image --format json --output trivy-report.json $IMAGE_NAME
         #vexy -c config.yaml -i ${{ github.sha }}.result.sbom.cdx.json -o vex.json
         ls
@@ -335,7 +336,7 @@ jobs:
       with:
          name: Trivy-SBOM 
          path: |
-          ./$IMAGE_NAME.$SIGNATURE.result.sbom.cdx.json
+          ./$IMAGE_NAME.${{env.signature}}.result.sbom.cdx.json
           ./trivy-report.json
           ./vex.json
     - name: Upload Cosign public key and signature
