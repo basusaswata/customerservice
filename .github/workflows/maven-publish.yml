@@ -146,11 +146,6 @@ jobs:
         mkdir trivusbom 
         trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
         trivy image --format json --output trivy-report.json ${{ github.repository }}
-        vexctl generate \
-          --tool trivy \
-          --input trivy-report.json \
-          --product ${{ github.repository }} \
-          --output vex.json
         ls
         cat trivy-report.json
         cat vex.json
@@ -313,8 +308,8 @@ jobs:
     - name: Upload Trivy-VEX 
       uses: actions/upload-artifact@v4
       with:
-         name: Trivy-VEX 
-         path: ./${{ github.sha }}.result.sbom-vex.cdx ${{ github.repository }}
+         name: Trivy-Vul-Report 
+         path: ./trivy-report.json
  
          
     # - name: Upload SLSA provenance statement
