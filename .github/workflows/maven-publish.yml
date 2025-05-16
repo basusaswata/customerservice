@@ -141,9 +141,8 @@ jobs:
         ls ./containerprov
         mkdir trivusbom 
         trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
-        trivy sbom ${{ github.sha }}.result.sbom.cdx --vex ${{ github.sha }}.result.sbom.vex.cdx
-
-        cat result.json
+        ls
+        cat <<EOF > trivy.vex.cdx
 ######################### CONTAINER BOM #########################################################
 # GENERATE BOM STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
 #################################################################################################        
