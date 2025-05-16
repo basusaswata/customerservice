@@ -140,7 +140,7 @@ jobs:
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
         mkdir trivusbom 
-        trivy image --format cyclonedx --output ${{ github.repository }}.result.sbom.cdx
+        trivy image --format cyclonedx --output ${{ github.repository }}.result.sbom.cdx ${{ github.repository }}
         trivy sbom ${{ github.repository }}.result.sbom.cdx --vex ${{ github.repository }}.result.sbom.vex.cdx
 
         cat result.json
