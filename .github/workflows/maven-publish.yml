@@ -337,11 +337,11 @@ jobs:
           ./vex.json
     - name: Upload Cosign public key and signature
       uses: actions/upload-artifact@v4
-        with:
-          name: cosign-public-key-and-signature
-          path: |
-            cosign.pub
-            sig.txt
+      with:
+         name: cosign-public-key-and-signature
+         path: |
+            ./cosign.pub
+            ./sig.txt
     
  
          
