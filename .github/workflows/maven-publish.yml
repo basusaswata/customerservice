@@ -67,6 +67,12 @@ jobs:
       uses: openvex/setup-vexctl@main
     - name: Check install!
       run: vexctl version
+    - name: python and vexy install
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+        cache: 'pip' # caching pip dependencies
+    - run: pip install vexy
 
     
         
