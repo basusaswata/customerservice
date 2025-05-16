@@ -145,6 +145,16 @@ jobs:
         ls ./containerprov
         mkdir trivusbom 
         trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
+        trivy image --format json --output trivy-report.json ${{ github.repository }}
+        vexctl generate \
+          --tool trivy \
+          --input trivy-report.json \
+          --product ${{ github.repository }} \
+          --output vex.json
+        ls
+        cat trivy-report.json
+        cat vex.json
+        
        
 ######################### CONTAINER BOM #########################################################
 # GENERATE BOM STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
