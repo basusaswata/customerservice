@@ -140,8 +140,8 @@ jobs:
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
         mkdir trivusbom 
-        trivy image --format cyclonedx --output ${{ github.repository }}.result.sbom.cdx ${{ github.repository }}
-        trivy sbom ${{ github.repository }}.result.sbom.cdx --vex ${{ github.repository }}.result.sbom.vex.cdx
+        trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
+        trivy sbom ${{ github.sha }}.result.sbom.cdx --vex ${{ sgithub.sha }}.result.sbom.vex.cdx
 
         cat result.json
 ######################### CONTAINER BOM #########################################################
@@ -297,12 +297,12 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
          name: Trivy-SBOM 
-         path: ./${{ github.repository }}.result.sbom.cdx
+         path: ./${{ github.sha }}.result.sbom.cdx
     - name: Upload Trivy-VEX 
       uses: actions/upload-artifact@v4
       with:
          name: Trivy-VEX 
-         path: ./${{ github.repository }}.result.sbom.vex.cdx
+         path: ./${{ github.sha }}.result.sbom.vex.cdx
  
          
     # - name: Upload SLSA provenance statement
