@@ -153,7 +153,7 @@ jobs:
         mkdir trivusbom 
         trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
         trivy image --format json --output trivy-report.json ${{ github.repository }}
-        vexy -i ${{ github.sha }}.result.sbom.cdx -o vex.json
+        vexy -c config.yaml -i ${{ github.sha }}.result.sbom.cdx -o vex.json
         ls
         
         
