@@ -141,7 +141,7 @@ jobs:
         ls ./containerprov
         mkdir trivusbom 
         trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
-         trivy image --format cycloned-vex --output ${{ github.sha }}.result.sbom-vex.cdx ${{ github.repository }}
+        trivy image --format cyclonedx-vex --output ${{ github.sha }}.result.sbom-vex.cdx ${{ github.repository }}
         ls
         cat <<EOF > trivy.vex.cdx
 ######################### CONTAINER BOM #########################################################
