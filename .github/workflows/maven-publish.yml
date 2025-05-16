@@ -17,6 +17,8 @@ env:
   USER_DATA: service-binding
   PRODUCT_VERSION: 3
   PRODUCT_NAME: Customer-Service-1
+  PROGRAM: SAS
+  GROUP: HOME
   SCANNER_ARGS: |
       exclude-files \.github/workflows/.*
       exclude-lines ^\s+with\s+imageTag\s*=.*$ 
@@ -74,6 +76,12 @@ jobs:
         cache: 'pip' # caching pip dependencies
     - name: Vexy install!
       run: pip install vexy
+    - name: Set image_name env var
+      run: |
+          IMAGE_NAME="${{ github.repository }}-${{ github.sha }}-${{env.PROGRAM}}-${{env.PRODUCT_NAME}}-${{env.PRODUCT_VERSION}}"
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          echo $IMAGE_NAME
+
 
     
         
