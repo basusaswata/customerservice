@@ -51,13 +51,18 @@ jobs:
     - name: install valint
       uses: scribe-security/action-installer@master
       
-    - name: Install OPA
+    - name: Install OPA and trivy
       run: |
         git clone https://github.com/basusaswata/scribe_sample_policy.git  
         curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.11.0/opa_linux_amd64
         chmod 755 ./opa
         pwd
         ls
+        sudo apt-get update
+        sudo apt-get install -y wget
+        wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.50.1_Linux-64bit.deb
+        sudo dpkg -i trivy_0.50.1_Linux-64bit.deb
+
     
         
 ######################### GET LATEST GIT COMMIT SHA #####################################################
@@ -133,6 +138,8 @@ jobs:
         FILE_PATH=$(find ./containerprov -type f -name '*statement*' | head -n 1)
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
+        mkdir trivusbom 
+        trivy image --format spdx-json --output result.json ${{ github.repository }}
 ######################### CONTAINER BOM #########################################################
 # GENERATE BOM STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
 #################################################################################################        
@@ -282,6 +289,11 @@ jobs:
       with:
          name: Container PROVENANCE
          path: ${{ env.CONT_PROV_FILE_PATH }}      
+    - name: Upload Trivy-SBOM 
+      uses: actions/upload-artifact@v4
+      with:
+         name: Trivy-SBOM 
+         path: ./trivusbom/result.json
 
 
          
