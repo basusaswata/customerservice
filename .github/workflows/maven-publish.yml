@@ -147,8 +147,11 @@ jobs:
         trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
         trivy image --format json --output trivy-report.json ${{ github.repository }}
         ls
-        cat trivy-report.json
-        cat vex.json
+        vexctl generate \
+            --tool trivy \
+            --input trivy-report.json \
+            --product "pkg:docker/${{ github.repository }}" \
+            --output vex.json
         
        
 ######################### CONTAINER BOM #########################################################
