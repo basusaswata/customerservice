@@ -151,9 +151,9 @@ jobs:
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
         mkdir trivusbom 
-        trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
+        trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx.json ${{ github.repository }}
         trivy image --format json --output trivy-report.json ${{ github.repository }}
-        vexy -c config.yaml -i ${{ github.sha }}.result.sbom.cdx -o vex.json
+        vexy -c config.yaml -i ${{ github.sha }}.result.sbom.cdx.json -o vex.json
         ls
         
         
@@ -312,7 +312,7 @@ jobs:
       with:
          name: Trivy-SBOM 
          path: |
-          ./${{ github.sha }}.result.sbom.cdx
+          ./${{ github.sha }}.result.sbom.cdx.json
           ./trivy-report.json
           ./vex.json
     
