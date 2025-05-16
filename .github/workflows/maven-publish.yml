@@ -78,7 +78,9 @@ jobs:
       run: pip install vexy
     - name: Set image_name env var
       run: |
-          IMAGE_NAME="${{ github.repository }}-${{ github.sha }}-${{env.PROGRAM}}-${{env.PRODUCT_NAME}}-${{env.PRODUCT_VERSION}}"
+          repo_full="${{ github.repository }}"
+          repo_name="${repo_full##*/}"
+          IMAGE_NAME="${repo_name}-${{ github.sha }}-${{env.PROGRAM}}-${{env.PRODUCT_NAME}}-${{env.PRODUCT_VERSION}}"
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
           echo $IMAGE_NAME
 
