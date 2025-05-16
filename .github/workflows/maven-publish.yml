@@ -151,10 +151,10 @@ jobs:
           
     - name: Build and push Docker image
       run: | 
-         docker build . -t ${{ github.repository }}
+         docker build . -t $IMAGE_NAME
          docker login --username basu.saswata@gmail.com --password ${{ secrets.DOCKPAS }}
-         docker push ${{ github.repository }}
-         cosign sign --key=cosign.key ${{ github.repository }} --output-signature sig.txt
+         docker push $IMAGE_NAME
+         cosign sign --key=cosign.key $IMAGE_NAME --output-signature sig.txt
          SIGNATURE=$(cat sig.txt)
          echo "signature=$SIGNATURE" >> $GITHUB_OUTPUT
          echo $SIGNATURE
@@ -165,14 +165,14 @@ jobs:
     - name: Generate signed Provenance for docker image
       run: |     
         mkdir containerprov
-        valint bom docker:${{ github.repository }} -E -o attest-slsa -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --key=./.github/workflows/certs/server.key 
-        valint bom docker:${{ github.repository }} -E -o statement-slsa -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/${{ github.repository }}.provenance.statement.json 
+        valint bom docker:$IMAGE_NAME -E -o attest-slsa -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/$IMAGE_NAME.provenance.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --key=./.github/workflows/certs/server.key 
+        valint bom docker:$IMAGE_NAME -E -o statement-slsa -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerprov --output-file ./containerprov/$IMAGE_NAME.provenance.statement.json 
         FILE_PATH=$(find ./containerprov -type f -name '*statement*' | head -n 1)
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
         mkdir trivusbom 
-        trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx.json ${{ github.repository }}
-        trivy image --format json --output trivy-report.json ${{ github.repository }}
+        trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx.json $IMAGE_NAME
+        trivy image --format json --output trivy-report.json $IMAGE_NAME
         #vexy -c config.yaml -i ${{ github.sha }}.result.sbom.cdx.json -o vex.json
         ls
         
@@ -184,8 +184,8 @@ jobs:
     - name: Generate signed BOM for docker image
       run: |     
         mkdir containerbom
-        valint bom docker:${{ github.repository }} -E -o attest -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt  --key=./.github/workflows/certs/server.key 
-        valint bom docker:${{ github.repository }} -E -o statement -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/${{ github.repository }}.bom.statement.json
+        valint bom docker:$IMAGE_NAME -E -o attest -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/$IMAGE_NAME.bom.sig.json --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt  --key=./.github/workflows/certs/server.key 
+        valint bom docker:$IMAGE_NAME -E -o statement -f  --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version ${{env.PRODUCT_VERSION}} --output-directory ./containerbom --output-file ./containerbom/$IMAGE_NAME.bom.statement.json
         FILE_PATH=$(find ./containerbom -type f -name '*statement*' | head -n 1)
         echo "CONT_BOM_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerbom
@@ -208,9 +208,9 @@ jobs:
          valint bom git:. -E -o attest-slsa -f  --components commits,files --product-key ${{env.PRODUCT_NAME}} --scribe.client-secret  ${{ secrets.CLIENT_SECRET }} --product-version  ${{env.PRODUCT_VERSION}} --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
 
         # BOM ATTESTAITON SIGNATURE - own key and certs
-        valint bom docker:${{ github.repository }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
+        valint bom docker:$IMAGE_NAME --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
         # PROVENANCE ATTESTATION SIGNATURE  -
-        valint slsa docker:${{ github.repository }} --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
+        valint slsa docker:$IMAGE_NAME --format=attest-slsa --attest.default x509 --ca=./.github/workflows/certs/rootCA.crt --cert=./.github/workflows/certs/server.crt --context-type=github --key=./.github/workflows/certs/server.key 
         #valint verify git:. -i attest --rule git/no-commit-to-main@v1
         #ls
 ######################### VERIFY PROVENANCE SIGNATURE SOURCE AND CONTAINER #######################
