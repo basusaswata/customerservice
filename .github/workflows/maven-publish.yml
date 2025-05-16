@@ -155,9 +155,9 @@ jobs:
       run: | 
          docker build . -t $IMAGE_NAME
          docker login --username basu.saswata@gmail.com --password ${{ secrets.DOCKPAS }}
-         docker tag $IMAGE_NAME $DOCKER_REPO_NAME:latest
+         docker tag $IMAGE_NAME $DOCKER_REPO_NAME
          docker push $DOCKER_REPO_NAME:latest
-         cosign sign --key=cosign.key $IMAGE_NAME --output-signature sig.txt
+         cosign sign --key=cosign.key $DOCKER_REPO_NAME --output-signature sig.txt
          SIGNATURE=$(cat sig.txt)
          echo "signature=$SIGNATURE" >> $GITHUB_OUTPUT
          echo $SIGNATURE
