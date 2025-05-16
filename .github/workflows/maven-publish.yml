@@ -153,12 +153,9 @@ jobs:
         mkdir trivusbom 
         trivy image --format cyclonedx --output ${{ github.sha }}.result.sbom.cdx ${{ github.repository }}
         trivy image --format json --output trivy-report.json ${{ github.repository }}
+        vexy -i ${{ github.sha }}.result.sbom.cdx -o vex.json
         ls
-        vexctl generate \
-            --tool trivy \
-            --input trivy-report.json \
-            --product "pkg:docker/${{ github.repository }}" \
-            --output vex.json
+        
         
        
 ######################### CONTAINER BOM #########################################################
@@ -310,16 +307,15 @@ jobs:
       with:
          name: Container PROVENANCE
          path: ${{ env.CONT_PROV_FILE_PATH }}      
-    - name: Upload Trivy-SBOM 
+    - name: Upload Trivy-SBOM-SCAN-VEX
       uses: actions/upload-artifact@v4
       with:
          name: Trivy-SBOM 
-         path: ./${{ github.sha }}.result.sbom.cdx
-    - name: Upload Trivy-VEX 
-      uses: actions/upload-artifact@v4
-      with:
-         name: Trivy-Vul-Report 
-         path: ./trivy-report.json
+         path: |
+          ./${{ github.sha }}.result.sbom.cdx
+          ./trivy-report.json
+          ./vex.json
+    
  
          
     # - name: Upload SLSA provenance statement
