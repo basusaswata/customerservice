@@ -180,6 +180,14 @@ jobs:
         #vexy -c config.yaml -i ${{ github.sha }}.result.sbom.cdx.json -o vex.json
         cosign attest --key=cosign.key --type cyclonedx --predicate $IMAGE_NAME.result.sbom.cdx.json $DOCKER_REPO_NAME
         ls
+    - name: Upload Trivy-SBOM-SCAN-VEX
+      uses: actions/upload-artifact@v4
+      with:
+         name: Trivy-SBOM 
+         path: |
+          ./$IMAGE_NAME.result.sbom.cdx.json
+          ./trivy-report.json
+          ./vex.json
         
         
        
@@ -332,14 +340,7 @@ jobs:
       with:
          name: Container PROVENANCE
          path: ${{ env.CONT_PROV_FILE_PATH }}      
-    - name: Upload Trivy-SBOM-SCAN-VEX
-      uses: actions/upload-artifact@v4
-      with:
-         name: Trivy-SBOM 
-         path: |
-          ./$IMAGE_NAME.result.sbom.cdx.json
-          ./trivy-report.json
-          ./vex.json
+   
     - name: Upload Cosign public key and signature
       uses: actions/upload-artifact@v4
       with:
