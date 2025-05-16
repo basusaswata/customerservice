@@ -141,6 +141,7 @@ jobs:
         ls ./containerprov
         mkdir trivusbom 
         trivy image --format spdx-json --output result.json ${{ github.repository }}
+        cat result.json
 ######################### CONTAINER BOM #########################################################
 # GENERATE BOM STATEMENT AND ATTESTATION  FOR DOCKER IMAGE
 #################################################################################################        
@@ -294,7 +295,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
          name: Trivy-SBOM 
-         path: ./trivusbom/result.json
+         path: ./result.json
 
 
          
