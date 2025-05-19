@@ -153,10 +153,12 @@ jobs:
           
     - name: Build and push Docker image
       run: | 
+         ##BUILD THE CONTAINER AND PUSH THE IMAGE
          docker build . -t $IMAGE_NAME
          docker login --username basu.saswata@gmail.com --password ${{ secrets.DOCKPAS }}
          docker tag $IMAGE_NAME $DOCKER_REPO_NAME
          docker push $DOCKER_REPO_NAME:latest
+         ## SIGN THE CONTAINER
          cosign sign --key=cosign.key $DOCKER_REPO_NAME --output-signature sig.txt
          SIGNATURE=$(cat sig.txt)
          echo "signature=$SIGNATURE" >> $GITHUB_OUTPUT
@@ -175,9 +177,12 @@ jobs:
         echo "CONT_PROV_FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
         ls ./containerprov
         mkdir trivusbom 
+        ## GENERATE SBOM USING TRIVY
         trivy image --format cyclonedx --output result.sbom.cdx.json $IMAGE_NAME
+        ## GENERATE SCA SCAN REPORT USING TRIVY
         trivy image --format json --output trivy-report.json $IMAGE_NAME
         #vexy -c config.yaml -i ${{ github.sha }}.result.sbom.cdx.json -o vex.json
+        ## ATTEST THE SBOM AND STORE IT ALONG WITH CONTAINER IMAGE
         cosign attest --key=cosign.key --type cyclonedx --predicate result.sbom.cdx.json $DOCKER_REPO_NAME
         ls
     - name: Upload Trivy-SBOM-SCAN-VEX
