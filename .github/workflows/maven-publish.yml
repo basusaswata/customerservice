@@ -247,7 +247,7 @@ jobs:
   
     - name: Verify SBOM using Trivy
       run: |
-        cosign verify-attestation --key cosign.key --type cyclonedx $DOCKER_REPO_NAME
+        cosign verify-attestation --key cosign.pub --type cyclonedx $DOCKER_REPO_NAME
        
 
 ######################### VERIFY SLSA SCA EVIDENCE ##############################################
