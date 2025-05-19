@@ -89,6 +89,7 @@ jobs:
     - name: Generate Cosign Key Pair (Ephemeral)
       run: |
           COSIGN_PASSWORD="" cosign generate-key-pair
+          cosign verify-attestation --help
       env:
           COSIGN_PASSWORD: ""
 
