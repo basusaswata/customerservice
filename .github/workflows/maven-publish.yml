@@ -251,7 +251,7 @@ jobs:
         cosign verify-attestation --key cosign.pub --insecure-ignore-tlog=true --type cyclonedx $DOCKER_REPO_NAME
     - name: Verify DOCKER CONTAINER using Trivy
       run: |
-        cosign verify --key cosign.pub --insecure-ignore-tlog=true --type cyclonedx $DOCKER_REPO_NAME
+        cosign verify --key cosign.pub --insecure-ignore-tlog=true $DOCKER_REPO_NAME
           
 
 ######################### VERIFY SLSA SCA EVIDENCE ##############################################
