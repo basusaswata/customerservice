@@ -92,8 +92,27 @@ jobs:
           cosign verify-attestation --help
       env:
           COSIGN_PASSWORD: ""
+    - name: Clean Existing Certs Folder
+      run: rm -f .github/workflows/certs/*
+    - name: Generate Root and Server Certificates
+      run: |
+          cd .github/workflows/certs
 
+          # Generate Root CA
+          openssl req -x509 -newkey rsa:4096 -days 365 -nodes \
+            -subj "/CN=My Root CA" \
+            -keyout rootCA.key -out rootCA.crt
 
+          # Generate Server key and CSR
+          openssl genrsa -out server.key 4096
+          openssl req -new -key server.key -subj "/CN=cosign.local" -out server.csr
+
+          # Sign Server Cert with Root CA
+          openssl x509 -req -in server.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial \
+            -out server.crt -days 365 -sha256
+
+          # Create Server Cert Chain
+          cat server.crt rootCA.crt > server-chain.pem
     
         
 ######################### GET LATEST GIT COMMIT SHA #####################################################
